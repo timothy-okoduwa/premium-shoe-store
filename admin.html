@@ -166,6 +166,18 @@
         margin-top: 1.25rem;
         line-height: 1.5;
       }
+      .prefill-note {
+        background: var(--gold-bg);
+        border: 1px solid var(--gold-light, #e8d5a3);
+        border-radius: 9px;
+        padding: 10px 14px;
+        margin-bottom: 1.25rem;
+        font-size: 0.78rem;
+        color: #7c5e10;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
 
       .admin-layout {
         display: flex;
@@ -1212,13 +1224,17 @@
           <p class="login-desc">
             Sign in with your administrator credentials to continue.
           </p>
+          <div class="prefill-note">
+            <i class="fas fa-info-circle"></i>
+            Credentials are pre-filled. Just click <strong>Sign In</strong>.
+          </div>
           <div class="form-group">
             <label class="form-label">Username</label>
             <input
               class="form-input"
               type="text"
               id="adminUser"
-              placeholder="admin"
+              value="admin"
             />
             <p class="form-error" id="loginUserErr"></p>
           </div>
@@ -1228,7 +1244,7 @@
               class="form-input"
               type="password"
               id="adminPass"
-              placeholder="••••••••"
+              value="admin123"
               onkeydown="if (event.key === 'Enter') doAdminLogin();"
             />
             <p class="form-error" id="loginPassErr"></p>
@@ -1258,7 +1274,6 @@
           id="sidebarOverlay"
           onclick="closeSidebar()"
         ></div>
-
         <aside class="sidebar" id="adminSidebar">
           <div class="sidebar-head">
             <div class="sidebar-logo">
@@ -2060,7 +2075,7 @@
 
     <!-- FIREBASE -->
     <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
       import {
         getFirestore,
         collection,
@@ -2069,7 +2084,8 @@
         query,
         orderBy,
         onSnapshot,
-      } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyDVAPiXAWtUJWUdZsMLoXLupw8wDkHDed4",
@@ -2098,9 +2114,7 @@
             }));
             onUpdate(orders);
           },
-          (err) => {
-            console.error("onSnapshot error:", err);
-          },
+          (err) => console.error("onSnapshot error:", err),
         );
         return _unsubscribeOrders;
       };
@@ -2116,6 +2130,17 @@
         } catch (e) {
           console.error("Firebase updateStatus error:", e);
           return false;
+        }
+      };
+
+      // Fetch users from Firestore users collection
+      window.fetchFirestoreUsers = async function () {
+        try {
+          const snap = await getDocs(collection(db, "users"));
+          return snap.docs.map((d) => d.data());
+        } catch (e) {
+          console.error("fetchUsers error:", e);
+          return [];
         }
       };
 
@@ -2138,9 +2163,6 @@
       };
       function getProducts() {
         return DB.get("ps_products", []);
-      }
-      function getUsers() {
-        return DB.get("ps_users", []);
       }
       function getAdminCreds() {
         return DB.get("ps_admin", { username: "admin", password: "admin123" });
@@ -2166,7 +2188,7 @@
         });
       }
 
-      // ============ ORDERS STATE (onSnapshot) ============
+      // ============ ORDERS STATE ============
       let _cachedOrders = [];
       let _ordersLoaded = false;
 
@@ -2179,40 +2201,28 @@
           window.subscribeToOrders((orders) => {
             _cachedOrders = orders;
             _ordersLoaded = true;
-
-            // Show live indicator
             const li = document.getElementById("liveIndicator");
             if (li) li.style.display = "";
-
-            // Re-render the active page
             const active = document.querySelector(".section.active");
             if (!active) return;
             const page = active.id.replace("page-", "");
-
             if (page === "dashboard") {
               renderDashboardStats();
               renderRevenueChart();
               renderStatusChart();
               renderDashOrders();
-            } else if (page === "orders") {
-              renderOrdersTable();
-            } else if (page === "analytics") {
-              renderAnalytics();
-            }
+            } else if (page === "orders") renderOrdersTable();
+            else if (page === "analytics") renderAnalytics();
             updateBadges();
           });
         };
-
-        if (window._firebaseAdminReady) {
-          subscribe();
-        } else {
+        if (window._firebaseAdminReady) subscribe();
+        else
           document.addEventListener("firebaseAdminReady", subscribe, {
             once: true,
           });
-        }
       }
 
-      // Kept for any legacy callers — resolves once the first snapshot arrives
       async function loadAllOrders() {
         if (_ordersLoaded) return _cachedOrders;
         return new Promise((resolve) => {
@@ -2241,7 +2251,7 @@
         document.body.style.overflow = "";
       }
 
-      // ============ AUTH ============
+      // ============ AUTH (hardcoded) ============
       function doAdminLogin() {
         const u = document.getElementById("adminUser").value.trim();
         const p = document.getElementById("adminPass").value;
@@ -2276,8 +2286,10 @@
         DB.set("ps_adminSession", null);
         document.getElementById("adminApp").style.display = "none";
         document.getElementById("loginPage").style.display = "";
-        document.getElementById("adminUser").value = "";
-        document.getElementById("adminPass").value = "";
+        // Restore pre-filled values
+        const creds = getAdminCreds();
+        document.getElementById("adminUser").value = creds.username;
+        document.getElementById("adminPass").value = creds.password;
         closeSidebar();
       }
 
@@ -2317,7 +2329,14 @@
 
       window.addEventListener("DOMContentLoaded", () => {
         const sess = DB.get("ps_adminSession", null);
-        if (sess && sess.loggedIn) showApp();
+        if (sess && sess.loggedIn) {
+          showApp();
+        } else {
+          // Pre-fill login with current creds (defaults if not changed)
+          const creds = getAdminCreds();
+          document.getElementById("adminUser").value = creds.username;
+          document.getElementById("adminPass").value = creds.password;
+        }
         document.addEventListener("keydown", (e) => {
           if (e.key === "Escape") {
             closeProductModal();
@@ -2651,14 +2670,10 @@
           newHistory,
         );
         if (ok) {
-          // onSnapshot will update _cachedOrders automatically; just close & reopen for immediate UI refresh
           closeOrderDetail();
           toast("Status updated to " + status, "success");
-          // Reopen after a brief moment so the snapshot has time to arrive
           setTimeout(() => openOrderDetail(id), 400);
-        } else {
-          toast("Failed to update status. Check connection.", "error");
-        }
+        } else toast("Failed to update status. Check connection.", "error");
       }
 
       // ============ PRODUCTS TABLE ============
@@ -3075,26 +3090,41 @@
         });
       }
 
-      // ============ CUSTOMERS ============
-      function renderCustomers() {
+      // ============ CUSTOMERS (from Firestore) ============
+      async function renderCustomers() {
         const search = (
           document.getElementById("customerSearch")?.value || ""
         ).toLowerCase();
-        const users = getUsers().filter(
-          (u) =>
-            !search ||
-            u.name.toLowerCase().includes(search) ||
-            u.email.toLowerCase().includes(search),
-        );
+        document.getElementById("customersBody").innerHTML =
+          '<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);"><span class="spinner-sm"></span> Loading customers…</td></tr>';
+        let users = [];
+        try {
+          users = await window.fetchFirestoreUsers();
+        } catch (e) {
+          console.error(e);
+        }
+        if (search)
+          users = users.filter(
+            (u) =>
+              (u.name || "").toLowerCase().includes(search) ||
+              (u.email || "").toLowerCase().includes(search),
+          );
         const orders = getCachedOrders();
         document.getElementById("customersBody").innerHTML = users.length
           ? users
               .map((u) => {
                 const uOrders = orders.filter(
-                  (o) => o.userEmail === u.email.toLowerCase(),
+                  (o) => o.userEmail === (u.email || "").toLowerCase(),
                 );
                 const spent = uOrders.reduce((s, o) => s + o.total, 0);
-                return `<tr><td><div style="display:flex;align-items:center;gap:9px;"><div style="width:32px;height:32px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.83rem;flex-shrink:0;">${u.name[0].toUpperCase()}</div><div><div style="font-weight:600;font-size:0.83rem;">${u.name}</div></div></div></td><td style="font-size:0.83rem;">${u.email}</td><td style="font-size:0.83rem;">${u.phone || "—"}</td><td><span style="font-weight:700;">${uOrders.length}</span></td><td><span style="font-weight:700;">${fmt(spent)}</span></td><td style="font-size:0.78rem;color:var(--muted);">${fmtDate(u.createdAt)}</td></tr>`;
+                return `<tr>
+                <td><div style="display:flex;align-items:center;gap:9px;"><div style="width:32px;height:32px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.83rem;flex-shrink:0;">${(u.name || "?")[0].toUpperCase()}</div><div><div style="font-weight:600;font-size:0.83rem;">${u.name || "—"}</div></div></div></td>
+                <td style="font-size:0.83rem;">${u.email || "—"}</td>
+                <td style="font-size:0.83rem;">${u.phone || "—"}</td>
+                <td><span style="font-weight:700;">${uOrders.length}</span></td>
+                <td><span style="font-weight:700;">${fmt(spent)}</span></td>
+                <td style="font-size:0.78rem;color:var(--muted);">${u.createdAt ? fmtDate(u.createdAt) : "—"}</td>
+              </tr>`;
               })
               .join("")
           : '<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">No customers yet</td></tr>';
@@ -3136,17 +3166,18 @@
             "Passwords do not match";
           return;
         }
-        DB.set("ps_admin", {
+        const updatedCreds = {
           username: newUser || creds.username,
           password: newPass || creds.password,
-        });
+        };
+        DB.set("ps_admin", updatedCreds);
         const sess = DB.get("ps_adminSession", {});
-        sess.username = newUser || creds.username;
+        sess.username = updatedCreds.username;
         DB.set("ps_adminSession", sess);
         document.getElementById("sidebarName").textContent =
-          newUser || creds.username;
-        document.getElementById("sidebarAvatar").textContent = (newUser ||
-          creds.username)[0].toUpperCase();
+          updatedCreds.username;
+        document.getElementById("sidebarAvatar").textContent =
+          updatedCreds.username[0].toUpperCase();
         toast("Credentials updated successfully", "success");
       }
 

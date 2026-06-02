@@ -991,6 +991,8 @@
         padding: 2rem;
         transform: scale(0.95) translateY(18px);
         transition: 0.25s;
+        max-height: 92vh;
+        overflow-y: auto;
       }
       .modal-overlay.open .auth-modal-box {
         transform: scale(1) translateY(0);
@@ -1364,6 +1366,15 @@
         border: 2px solid rgba(255, 255, 255, 0.3);
         border-radius: 50%;
         border-top-color: white;
+        animation: spin 0.8s ease-in-out infinite;
+      }
+      .spinner-dark {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(0, 0, 0, 0.15);
+        border-radius: 50%;
+        border-top-color: var(--ink);
         animation: spin 0.8s ease-in-out infinite;
       }
 
@@ -1993,12 +2004,13 @@
       onclick="handleModalClick(event, 'authModal')"
     >
       <div class="auth-modal-box">
+        <!-- LOGIN VIEW -->
         <div id="authLoginView">
           <h2 class="auth-title">Welcome back</h2>
           <p class="auth-sub">Sign in to your account to continue shopping.</p>
           <div class="form-group">
-            <label class="form-label">Email</label
-            ><input
+            <label class="form-label">Email</label>
+            <input
               class="form-input"
               type="email"
               id="loginEmail"
@@ -2007,8 +2019,8 @@
             <p class="form-error" id="loginEmailErr"></p>
           </div>
           <div class="form-group">
-            <label class="form-label">Password</label
-            ><input
+            <label class="form-label">Password</label>
+            <input
               class="form-input"
               type="password"
               id="loginPassword"
@@ -2021,22 +2033,28 @@
             id="loginGeneralErr"
             style="margin-bottom: 9px"
           ></p>
-          <button class="add-btn" style="margin-top: 6px" onclick="doLogin()">
-            <i class="fas fa-sign-in-alt"></i> Sign In
+          <button
+            class="add-btn"
+            id="loginBtn"
+            style="margin-top: 6px"
+            onclick="doLogin()"
+          >
+            <i class="fas fa-sign-in-alt"></i> <span>Sign In</span>
           </button>
           <p class="form-hint">
             Don't have an account?
             <a onclick="switchAuth('register')">Create one</a>
           </p>
         </div>
+        <!-- REGISTER VIEW -->
         <div id="authRegisterView" style="display: none">
           <h2 class="auth-title">Create account</h2>
           <p class="auth-sub">
             Join Premium Shoe Store for a personalised experience.
           </p>
           <div class="form-group">
-            <label class="form-label">Full Name</label
-            ><input
+            <label class="form-label">Full Name</label>
+            <input
               class="form-input"
               type="text"
               id="regName"
@@ -2045,8 +2063,8 @@
             <p class="form-error" id="regNameErr"></p>
           </div>
           <div class="form-group">
-            <label class="form-label">Email</label
-            ><input
+            <label class="form-label">Email</label>
+            <input
               class="form-input"
               type="email"
               id="regEmail"
@@ -2055,8 +2073,8 @@
             <p class="form-error" id="regEmailErr"></p>
           </div>
           <div class="form-group">
-            <label class="form-label">Phone</label
-            ><input
+            <label class="form-label">Phone</label>
+            <input
               class="form-input"
               type="tel"
               id="regPhone"
@@ -2064,8 +2082,8 @@
             />
           </div>
           <div class="form-group">
-            <label class="form-label">Password</label
-            ><input
+            <label class="form-label">Password</label>
+            <input
               class="form-input"
               type="password"
               id="regPassword"
@@ -2080,10 +2098,11 @@
           ></p>
           <button
             class="add-btn gold"
+            id="registerBtn"
             style="margin-top: 6px"
             onclick="doRegister()"
           >
-            <i class="fas fa-user-plus"></i> Create Account
+            <i class="fas fa-user-plus"></i> <span>Create Account</span>
           </button>
           <p class="form-hint">
             Already have an account?
@@ -2110,8 +2129,8 @@
           <div class="section-heading">Delivery Information</div>
           <div class="two-col form-group">
             <div>
-              <label class="form-label">Full Name</label
-              ><input
+              <label class="form-label">Full Name</label>
+              <input
                 class="form-input"
                 type="text"
                 id="chkName"
@@ -2120,8 +2139,8 @@
               <p class="form-error" id="chkNameErr"></p>
             </div>
             <div>
-              <label class="form-label">Phone</label
-              ><input
+              <label class="form-label">Phone</label>
+              <input
                 class="form-input"
                 type="tel"
                 id="chkPhone"
@@ -2131,8 +2150,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Email</label
-            ><input
+            <label class="form-label">Email</label>
+            <input
               class="form-input"
               type="email"
               id="chkEmail"
@@ -2140,8 +2159,8 @@
             />
           </div>
           <div class="form-group">
-            <label class="form-label">Delivery Address</label
-            ><input
+            <label class="form-label">Delivery Address</label>
+            <input
               class="form-input"
               type="text"
               id="chkAddress"
@@ -2171,14 +2190,15 @@
           </div>
           <div style="margin-top: 1.25rem" class="form-group">
             <div class="section-heading">Payment Method</div>
-            <label class="payment-option selected" id="pay-card"
-              ><input
+            <label class="payment-option selected" id="pay-card">
+              <input
                 type="radio"
                 name="payment"
                 value="card"
                 checked
                 onclick="selectPayment('pay-card')"
-              /><i
+              />
+              <i
                 class="fas fa-credit-card"
                 style="color: var(--accent); width: 18px"
               ></i>
@@ -2189,15 +2209,16 @@
                 <div style="font-size: 0.73rem; color: var(--muted)">
                   Visa, Mastercard, Verve
                 </div>
-              </div></label
-            >
-            <label class="payment-option" id="pay-transfer"
-              ><input
+              </div>
+            </label>
+            <label class="payment-option" id="pay-transfer">
+              <input
                 type="radio"
                 name="payment"
                 value="transfer"
                 onclick="selectPayment('pay-transfer')"
-              /><i
+              />
+              <i
                 class="fas fa-university"
                 style="color: #22c55e; width: 18px"
               ></i>
@@ -2208,15 +2229,16 @@
                 <div style="font-size: 0.73rem; color: var(--muted)">
                   Direct bank transfer
                 </div>
-              </div></label
-            >
-            <label class="payment-option" id="pay-cod"
-              ><input
+              </div>
+            </label>
+            <label class="payment-option" id="pay-cod">
+              <input
                 type="radio"
                 name="payment"
                 value="cod"
                 onclick="selectPayment('pay-cod')"
-              /><i
+              />
+              <i
                 class="fas fa-money-bill-wave"
                 style="color: #22c55e; width: 18px"
               ></i>
@@ -2227,8 +2249,8 @@
                 <div style="font-size: 0.73rem; color: var(--muted)">
                   Pay when you receive
                 </div>
-              </div></label
-            >
+              </div>
+            </label>
           </div>
           <div class="order-summary">
             <div class="section-heading" style="margin-bottom: 7px">
@@ -2350,18 +2372,28 @@
     <!-- TOAST -->
     <div class="toast-wrap" id="toastWrap"></div>
 
-    <!-- FIREBASE -->
+    <!-- FIREBASE SDK -->
     <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+        signOut,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
       import {
         getFirestore,
         collection,
+        doc,
+        setDoc,
+        getDoc,
         addDoc,
         query,
         where,
         orderBy,
         onSnapshot,
-      } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyDVAPiXAWtUJWUdZsMLoXLupw8wDkHDed4",
@@ -2374,35 +2406,94 @@
       };
 
       const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
       const db = getFirestore(app);
 
+      // ---- Auth ----
+      window._fbRegister = async function (email, password, name, phone) {
+        const cred = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password,
+        );
+        const uid = cred.user.uid;
+        const profile = {
+          uid,
+          name,
+          email: email.toLowerCase(),
+          phone,
+          createdAt: new Date().toISOString(),
+        };
+        await setDoc(doc(db, "users", uid), profile);
+        return profile;
+      };
+
+      window._fbLogin = async function (email, password) {
+        const cred = await signInWithEmailAndPassword(auth, email, password);
+        const uid = cred.user.uid;
+        const snap = await getDoc(doc(db, "users", uid));
+        return snap.exists()
+          ? snap.data()
+          : {
+              uid,
+              email: email.toLowerCase(),
+              name: email.split("@")[0],
+              phone: "",
+            };
+      };
+
+      window._fbLogout = async function () {
+        await signOut(auth);
+      };
+
+      // ---- Orders ----
       window.saveOrderToFirebase = async function (order) {
         const docRef = await addDoc(collection(db, "orders"), order);
         return docRef.id;
       };
 
-      // Real-time listener for a specific user's orders
       window.subscribeToUserOrders = function (userEmail, onUpdate) {
         const q = query(
           collection(db, "orders"),
           where("userEmail", "==", userEmail.toLowerCase()),
           orderBy("date", "desc"),
         );
-        const unsubscribe = onSnapshot(
+        return onSnapshot(
           q,
           (snap) => {
-            const orders = snap.docs.map((d) => ({
-              ...d.data(),
-              _docId: d.id,
-            }));
-            onUpdate(orders);
+            onUpdate(snap.docs.map((d) => ({ ...d.data(), _docId: d.id })));
           },
-          (err) => {
-            console.error("onSnapshot error:", err);
-          },
+          (err) => console.error("orders snapshot:", err),
         );
-        return unsubscribe;
       };
+
+      // ---- Auth state listener ----
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          try {
+            const snap = await getDoc(doc(db, "users", user.uid));
+            const profile = snap.exists()
+              ? snap.data()
+              : {
+                  uid: user.uid,
+                  email: user.email,
+                  name: user.email.split("@")[0],
+                  phone: "",
+                };
+            window._currentUser = profile;
+          } catch (e) {
+            window._currentUser = {
+              uid: user.uid,
+              email: user.email,
+              name: user.email.split("@")[0],
+              phone: "",
+            };
+          }
+        } else {
+          window._currentUser = null;
+        }
+        if (window._onAuthChange) window._onAuthChange(window._currentUser);
+      });
 
       window._firebaseReady = true;
       document.dispatchEvent(new Event("firebaseReady"));
@@ -2425,6 +2516,7 @@
           "₦" + Number(n).toLocaleString("en-NG", { minimumFractionDigits: 0 })
         );
       }
+
       function getProducts() {
         let p = DB.get("ps_products", []);
         if (!p.length) {
@@ -2590,12 +2682,6 @@
         }
         return p;
       }
-      function getUsers() {
-        return DB.get("ps_users", []);
-      }
-      function getCurrentUser() {
-        return DB.get("ps_currentUser", null);
-      }
       function getCart() {
         return DB.get("ps_cart", []);
       }
@@ -2620,6 +2706,16 @@
         { name: "Grey", hex: "#6b6b6b" },
         { name: "Burgundy", hex: "#6d1a2a" },
       ];
+
+      // ============ FIREBASE AUTH ============
+      window._currentUser = null;
+      window._onAuthChange = function (user) {
+        buildUserMenu();
+        if (!user) {
+          // if orders modal is open and user logs out, close it
+          document.getElementById("ordersModal").classList.remove("open");
+        }
+      };
 
       // ============ MOBILE SEARCH ============
       function toggleMobSearch() {
@@ -2858,6 +2954,10 @@
       }
 
       // ============ AUTH ============
+      function getCurrentUser() {
+        return window._currentUser || null;
+      }
+
       function toggleUserMenu() {
         const menu = document.getElementById("userMenu");
         menu.classList.toggle("open");
@@ -2866,13 +2966,22 @@
       function buildUserMenu() {
         const user = getCurrentUser();
         const menu = document.getElementById("userMenu");
+        const label = document.getElementById("userBtnLabel");
         if (user) {
-          menu.innerHTML = `<div style="padding:13px 15px;border-bottom:1px solid var(--border);"><div style="font-weight:700;font-size:0.875rem;">${user.name}</div><div style="font-size:0.73rem;color:var(--muted);">${user.email}</div></div><button class="user-menu-item" onclick="openOrders();document.getElementById('userMenu').classList.remove('open');"><i class="fas fa-box-open" style="width:16px;color:var(--muted);"></i>My Orders</button><div class="user-menu-sep"></div><button class="user-menu-item danger" onclick="doLogout();document.getElementById('userMenu').classList.remove('open');"><i class="fas fa-sign-out-alt" style="width:16px;"></i>Sign Out</button>`;
-          document.getElementById("userBtnLabel").textContent =
-            user.name.split(" ")[0];
+          menu.innerHTML = `
+            <div style="padding:13px 15px;border-bottom:1px solid var(--border);">
+              <div style="font-weight:700;font-size:0.875rem;">${user.name}</div>
+              <div style="font-size:0.73rem;color:var(--muted);">${user.email}</div>
+            </div>
+            <button class="user-menu-item" onclick="openOrders();document.getElementById('userMenu').classList.remove('open');"><i class="fas fa-box-open" style="width:16px;color:var(--muted);"></i>My Orders</button>
+            <div class="user-menu-sep"></div>
+            <button class="user-menu-item danger" onclick="doLogout();document.getElementById('userMenu').classList.remove('open');"><i class="fas fa-sign-out-alt" style="width:16px;"></i>Sign Out</button>`;
+          label.textContent = user.name.split(" ")[0];
         } else {
-          menu.innerHTML = `<button class="user-menu-item" onclick="openAuth('login');document.getElementById('userMenu').classList.remove('open');"><i class="fas fa-sign-in-alt" style="width:16px;color:var(--muted);"></i>Sign In</button><button class="user-menu-item" onclick="openAuth('register');document.getElementById('userMenu').classList.remove('open');"><i class="fas fa-user-plus" style="width:16px;color:var(--muted);"></i>Create Account</button>`;
-          document.getElementById("userBtnLabel").textContent = "Sign In";
+          menu.innerHTML = `
+            <button class="user-menu-item" onclick="openAuth('login');document.getElementById('userMenu').classList.remove('open');"><i class="fas fa-sign-in-alt" style="width:16px;color:var(--muted);"></i>Sign In</button>
+            <button class="user-menu-item" onclick="openAuth('register');document.getElementById('userMenu').classList.remove('open');"><i class="fas fa-user-plus" style="width:16px;color:var(--muted);"></i>Create Account</button>`;
+          label.textContent = "Sign In";
         }
       }
       function openAuth(view) {
@@ -2897,7 +3006,8 @@
           if (el) el.textContent = "";
         });
       }
-      function doLogin() {
+
+      async function doLogin() {
         const email = document.getElementById("loginEmail").value.trim();
         const pass = document.getElementById("loginPassword").value;
         ["loginEmailErr", "loginPassErr", "loginGeneralErr"].forEach(
@@ -2915,23 +3025,31 @@
           ok = false;
         }
         if (!ok) return;
-        const users = getUsers();
-        const user = users.find(
-          (u) =>
-            u.email.toLowerCase() === email.toLowerCase() &&
-            u.password === pass,
-        );
-        if (!user) {
-          document.getElementById("loginGeneralErr").textContent =
-            "Invalid email or password.";
-          return;
+
+        const btn = document.getElementById("loginBtn");
+        btn.disabled = true;
+        btn.innerHTML = `<span class="spinner"></span> Signing in…`;
+        try {
+          const user = await window._fbLogin(email, pass);
+          window._currentUser = user;
+          closeModal("authModal");
+          buildUserMenu();
+          toast(`Welcome back, ${user.name.split(" ")[0]}!`, "success");
+        } catch (e) {
+          const msg =
+            e.code === "auth/invalid-credential" ||
+            e.code === "auth/wrong-password" ||
+            e.code === "auth/user-not-found"
+              ? "Invalid email or password."
+              : "Sign in failed. Please try again.";
+          document.getElementById("loginGeneralErr").textContent = msg;
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = `<i class="fas fa-sign-in-alt"></i> <span>Sign In</span>`;
         }
-        DB.set("ps_currentUser", user);
-        closeModal("authModal");
-        buildUserMenu();
-        toast(`Welcome back, ${user.name.split(" ")[0]}!`, "success");
       }
-      function doRegister() {
+
+      async function doRegister() {
         const name = document.getElementById("regName").value.trim();
         const email = document.getElementById("regEmail").value.trim();
         const phone = document.getElementById("regPhone").value.trim();
@@ -2956,29 +3074,37 @@
           ok = false;
         }
         if (!ok) return;
-        const users = getUsers();
-        if (users.find((u) => u.email.toLowerCase() === email.toLowerCase())) {
-          document.getElementById("regEmailErr").textContent =
-            "Email already registered";
-          return;
+
+        const btn = document.getElementById("registerBtn");
+        btn.disabled = true;
+        btn.innerHTML = `<span class="spinner-dark"></span> Creating account…`;
+        try {
+          const user = await window._fbRegister(email, pass, name, phone);
+          window._currentUser = user;
+          closeModal("authModal");
+          buildUserMenu();
+          toast(`Welcome, ${name.split(" ")[0]}! Account created.`, "success");
+        } catch (e) {
+          const msg =
+            e.code === "auth/email-already-in-use"
+              ? "This email is already registered. Please sign in."
+              : e.code === "auth/weak-password"
+                ? "Password is too weak. Use at least 6 characters."
+                : "Registration failed. Please try again.";
+          document.getElementById("regGeneralErr").textContent = msg;
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = `<i class="fas fa-user-plus"></i> <span>Create Account</span>`;
         }
-        const user = {
-          id: Date.now(),
-          name,
-          email,
-          phone,
-          password: pass,
-          createdAt: new Date().toISOString(),
-        };
-        users.push(user);
-        DB.set("ps_users", users);
-        DB.set("ps_currentUser", user);
-        closeModal("authModal");
-        buildUserMenu();
-        toast(`Welcome, ${name.split(" ")[0]}! Account created.`, "success");
       }
-      function doLogout() {
-        DB.set("ps_currentUser", null);
+
+      async function doLogout() {
+        try {
+          await window._fbLogout();
+        } catch (e) {
+          console.error(e);
+        }
+        window._currentUser = null;
         buildUserMenu();
         toast("Signed out successfully.");
       }
@@ -3064,7 +3190,7 @@
         const orderId = "PS" + Date.now();
         const order = {
           id: orderId,
-          userId: user.id,
+          userId: user.uid || user.id,
           userEmail: user.email.toLowerCase(),
           customer: {
             name,
@@ -3090,9 +3216,7 @@
         placeBtn.disabled = true;
         placeBtn.innerHTML = `<span class="spinner"></span> Saving Order…`;
         try {
-          if (window.saveOrderToFirebase)
-            await window.saveOrderToFirebase(order);
-          else throw new Error("Firebase not ready");
+          await window.saveOrderToFirebase(order);
           const products = getProducts();
           cart.forEach((item) => {
             const p = products.find((x) => x.id === item.id);
@@ -3114,7 +3238,7 @@
         } catch (err) {
           console.error(err);
           document.getElementById("chkGeneralErr").textContent =
-            "Failed to save order. Please check your connection and try again.";
+            "Failed to save order. Check your connection and try again.";
           toast("Order save failed. Please try again.", "error");
         } finally {
           placeBtn.disabled = false;
@@ -3122,26 +3246,21 @@
         }
       }
 
-      // ============ ORDERS (real-time with onSnapshot) ============
+      // ============ ORDERS ============
       let _unsubscribeUserOrders = null;
-
-      async function openOrders() {
+      function openOrders() {
         const user = getCurrentUser();
         if (!user) {
           openAuth("login");
           return;
         }
-
         openModal("ordersModal");
         const container = document.getElementById("ordersListContainer");
         container.innerHTML = `<div class="loading-orders"><i class="fas fa-spinner"></i><p>Loading your orders…</p></div>`;
-
-        // Tear down any previous listener
         if (_unsubscribeUserOrders) {
           _unsubscribeUserOrders();
           _unsubscribeUserOrders = null;
         }
-
         const subscribe = () => {
           _unsubscribeUserOrders = window.subscribeToUserOrders(
             user.email,
@@ -3179,14 +3298,10 @@
             },
           );
         };
-
-        if (window._firebaseReady) {
-          subscribe();
-        } else {
+        if (window._firebaseReady) subscribe();
+        else
           document.addEventListener("firebaseReady", subscribe, { once: true });
-        }
       }
-
       function closeOrdersModal() {
         closeModal("ordersModal");
         if (_unsubscribeUserOrders) {
