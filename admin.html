@@ -1,0 +1,3113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Premium Shoe Store — Admin Portal</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+      :root {
+        --ink: #0d0d0d;
+        --sidebar: #111827;
+        --sidebar-hover: #1f2937;
+        --sidebar-active: #1e3a5c;
+        --cream: #f7f4ee;
+        --gold: #c9a84c;
+        --gold-bg: #fdf6e3;
+        --accent: #1a3a5c;
+        --accent2: #b04a2f;
+        --green: #16a34a;
+        --green-bg: #dcfce7;
+        --blue: #1d4ed8;
+        --blue-bg: #dbeafe;
+        --border: #e8e2d8;
+        --muted: #6b7280;
+        --card: #ffffff;
+        --page-bg: #f4f1ec;
+        --sidebar-w: 240px;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        font-size: 16px;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--page-bg);
+        color: var(--ink);
+        overflow-x: hidden;
+      }
+
+      /* ===== LOGIN ===== */
+      .login-page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--sidebar);
+        padding: 1rem;
+      }
+      .login-card {
+        background: white;
+        border-radius: 18px;
+        padding: 2.5rem 2rem;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4);
+      }
+      .login-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 1.75rem;
+      }
+      .login-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--gold);
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        color: var(--ink);
+        flex-shrink: 0;
+      }
+      .login-brand {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+      }
+      .login-sub {
+        font-size: 0.68rem;
+        color: var(--muted);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .login-title {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.7rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .login-desc {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-bottom: 1.75rem;
+      }
+      .form-group {
+        margin-bottom: 0.9rem;
+      }
+      .form-label {
+        display: block;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+      }
+      .form-input {
+        width: 100%;
+        padding: 11px 13px;
+        border: 2px solid var(--border);
+        border-radius: 9px;
+        font-size: 0.875rem;
+        font-family: "DM Sans", sans-serif;
+        outline: none;
+        transition: 0.2s;
+        -webkit-appearance: none;
+      }
+      .form-input:focus {
+        border-color: var(--ink);
+      }
+      .form-error {
+        font-size: 0.73rem;
+        color: var(--accent2);
+        margin-top: 3px;
+      }
+      .btn-login {
+        width: 100%;
+        padding: 13px;
+        background: var(--ink);
+        color: white;
+        border: none;
+        border-radius: 9px;
+        font-weight: 700;
+        font-size: 0.875rem;
+        font-family: "DM Sans", sans-serif;
+        cursor: pointer;
+        transition: 0.2s;
+        margin-top: 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+      }
+      .btn-login:hover {
+        background: var(--accent);
+      }
+      .login-hint {
+        font-size: 0.73rem;
+        color: var(--muted);
+        text-align: center;
+        margin-top: 1.25rem;
+        line-height: 1.5;
+      }
+
+      /* ===== LAYOUT ===== */
+      .admin-layout {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* ===== SIDEBAR ===== */
+      .sidebar {
+        width: var(--sidebar-w);
+        background: var(--sidebar);
+        color: white;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 60;
+        transition: transform 0.3s;
+        overflow-y: auto;
+      }
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 59;
+      }
+      .sidebar-overlay.open {
+        display: block;
+      }
+      .sidebar-head {
+        padding: 1.25rem 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .sidebar-logo {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .sidebar-icon {
+        width: 32px;
+        height: 32px;
+        background: var(--gold);
+        border-radius: 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        color: var(--ink);
+        flex-shrink: 0;
+      }
+      .sidebar-brand {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1rem;
+        font-weight: 700;
+      }
+      .sidebar-tag {
+        font-size: 0.58rem;
+        color: var(--gold);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-top: 1px;
+      }
+      .sidebar-close-btn {
+        display: none;
+        background: rgba(255, 255, 255, 0.08);
+        border: none;
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 7px;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+      }
+      .sidebar-nav {
+        flex: 1;
+        padding: 0.75rem;
+      }
+      .nav-section {
+        font-size: 0.58rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.3);
+        padding: 1.1rem 0.75rem 0.4rem;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 9px 11px;
+        border-radius: 7px;
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: 0.15s;
+        width: 100%;
+        background: none;
+        border: none;
+        font-family: "DM Sans", sans-serif;
+        text-align: left;
+      }
+      .nav-item:hover {
+        background: var(--sidebar-hover);
+        color: white;
+      }
+      .nav-item.active {
+        background: var(--sidebar-active);
+        color: white;
+      }
+      .nav-item i {
+        width: 16px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+      .nav-badge {
+        margin-left: auto;
+        background: var(--accent2);
+        color: white;
+        font-size: 0.58rem;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 100px;
+      }
+      .sidebar-foot {
+        padding: 0.75rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .admin-info {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 9px 11px;
+      }
+      .admin-avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--gold);
+        color: var(--ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.78rem;
+        flex-shrink: 0;
+      }
+      .admin-name {
+        font-size: 0.78rem;
+        font-weight: 600;
+      }
+      .admin-role {
+        font-size: 0.68rem;
+        color: rgba(255, 255, 255, 0.4);
+      }
+
+      /* ===== MAIN CONTENT ===== */
+      .main-content {
+        margin-left: var(--sidebar-w);
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        min-width: 0;
+      }
+      .topbar {
+        background: white;
+        border-bottom: 1px solid var(--border);
+        padding: 0 1.25rem;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        gap: 10px;
+      }
+      .topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+      .hamburger-btn {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--ink);
+        font-size: 1.1rem;
+        padding: 6px;
+        border-radius: 7px;
+        transition: 0.15s;
+      }
+      .hamburger-btn:hover {
+        background: var(--cream);
+      }
+      .topbar-title {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      .topbar-time {
+        font-size: 0.75rem;
+        color: var(--muted);
+        display: none;
+      }
+      .store-link {
+        font-size: 0.78rem;
+        color: var(--accent);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 12px;
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        transition: 0.15s;
+        white-space: nowrap;
+      }
+      .store-link:hover {
+        background: var(--cream);
+      }
+      .page-body {
+        padding: 1.25rem;
+        flex: 1;
+      }
+      .section {
+        display: none;
+      }
+      .section.active {
+        display: block;
+      }
+      .page-title {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 3px;
+      }
+      .page-sub {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-bottom: 1.5rem;
+      }
+
+      /* ===== STATS GRID ===== */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .stat-card {
+        background: var(--card);
+        border-radius: 14px;
+        padding: 1.25rem;
+        border: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        transition: 0.2s;
+      }
+      .stat-card:hover {
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+      }
+      .stat-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+      .stat-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .stat-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+      }
+      .stat-value {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.75rem;
+        font-weight: 700;
+        line-height: 1;
+      }
+      .stat-change {
+        font-size: 0.72rem;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .stat-change.up {
+        color: var(--green);
+      }
+      .stat-change.down {
+        color: var(--accent2);
+      }
+      .stat-change.neutral {
+        color: var(--muted);
+      }
+
+      /* ===== CHARTS ===== */
+      .charts-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .chart-card {
+        background: var(--card);
+        border-radius: 14px;
+        padding: 1.25rem;
+        border: 1px solid var(--border);
+      }
+      .chart-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.25rem;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chart-title {
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+      .chart-sub {
+        font-size: 0.73rem;
+        color: var(--muted);
+        margin-top: 1px;
+      }
+      .time-select {
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        padding: 5px 9px;
+        font-size: 0.78rem;
+        font-family: "DM Sans", sans-serif;
+        outline: none;
+        cursor: pointer;
+        background: white;
+        color: var(--ink);
+      }
+
+      /* ===== TABLE ===== */
+      .table-card {
+        background: var(--card);
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        overflow: hidden;
+      }
+      .table-head {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.875rem;
+        flex-wrap: wrap;
+      }
+      .table-title {
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+      .search-box {
+        position: relative;
+      }
+      .search-box input {
+        padding: 7px 11px 7px 32px;
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        font-size: 0.78rem;
+        font-family: "DM Sans", sans-serif;
+        outline: none;
+        width: 200px;
+        max-width: 100%;
+        transition: 0.2s;
+      }
+      .search-box input:focus {
+        border-color: var(--ink);
+      }
+      .search-box i {
+        position: absolute;
+        left: 9px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+      .table-scroll {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 540px;
+      }
+      thead th {
+        padding: 9px 14px;
+        text-align: left;
+        font-size: 0.67rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        background: #fafaf8;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+      }
+      tbody tr {
+        transition: 0.15s;
+      }
+      tbody tr:hover {
+        background: #fafaf8;
+      }
+      tbody tr + tr {
+        border-top: 1px solid var(--border);
+      }
+      td {
+        padding: 12px 14px;
+        font-size: 0.85rem;
+        vertical-align: middle;
+      }
+      .td-product {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .td-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 7px;
+        object-fit: cover;
+        background: #f5f1eb;
+        flex-shrink: 0;
+      }
+      .td-name {
+        font-weight: 600;
+        font-size: 0.83rem;
+      }
+      .td-sub {
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
+
+      /* ===== BADGES ===== */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 0.67rem;
+        font-weight: 700;
+        padding: 3px 9px;
+        border-radius: 100px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        white-space: nowrap;
+      }
+      .badge-pending {
+        background: #fff7e6;
+        color: #a16207;
+      }
+      .badge-processing {
+        background: var(--blue-bg);
+        color: var(--blue);
+      }
+      .badge-shipped {
+        background: #eff6ff;
+        color: #1d4ed8;
+      }
+      .badge-completed {
+        background: var(--green-bg);
+        color: var(--green);
+      }
+      .badge-cancelled {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+      .badge-active {
+        background: var(--green-bg);
+        color: var(--green);
+      }
+      .badge-low {
+        background: #fff7e6;
+        color: #d97706;
+      }
+      .badge-critical {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+      .badge-cat {
+        background: var(--cream);
+        color: var(--muted);
+      }
+
+      /* ===== STOCK BAR ===== */
+      .stock-bar-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .stock-bar {
+        flex: 1;
+        height: 6px;
+        background: #e5e7eb;
+        border-radius: 3px;
+        overflow: hidden;
+        min-width: 60px;
+      }
+      .stock-fill {
+        height: 100%;
+        border-radius: 3px;
+      }
+      .stock-num {
+        font-size: 0.73rem;
+        font-weight: 600;
+        width: 28px;
+        text-align: right;
+      }
+
+      /* ===== BUTTONS ===== */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 16px;
+        border-radius: 7px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        font-family: "DM Sans", sans-serif;
+        cursor: pointer;
+        border: none;
+        transition: 0.15s;
+      }
+      .btn-primary {
+        background: var(--ink);
+        color: white;
+      }
+      .btn-primary:hover {
+        background: var(--accent);
+      }
+      .btn-ghost {
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--ink);
+      }
+      .btn-ghost:hover {
+        background: var(--cream);
+      }
+      .btn-danger {
+        background: none;
+        border: 1px solid #fca5a5;
+        color: #dc2626;
+      }
+      .btn-danger:hover {
+        background: #fee2e2;
+      }
+      .btn-sm {
+        padding: 5px 10px;
+        font-size: 0.72rem;
+      }
+      .icon-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--border);
+        background: white;
+        cursor: pointer;
+        color: var(--muted);
+        transition: 0.15s;
+        font-size: 0.78rem;
+      }
+      .icon-btn:hover {
+        border-color: var(--ink);
+        color: var(--ink);
+      }
+      .icon-btn.danger:hover {
+        border-color: #dc2626;
+        color: #dc2626;
+        background: #fee2e2;
+      }
+
+      /* ===== MODALS ===== */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.2s;
+      }
+      .modal-overlay.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .modal-box {
+        background: white;
+        border-radius: 18px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        transform: scale(0.95) translateY(18px);
+        transition: 0.2s;
+        -webkit-overflow-scrolling: touch;
+      }
+      .modal-overlay.open .modal-box {
+        transform: scale(1) translateY(0);
+      }
+      .modal-hdr {
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 2;
+      }
+      .modal-hdr h3 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+      }
+      .modal-close {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--muted);
+        font-size: 1rem;
+        transition: 0.15s;
+        padding: 4px;
+      }
+      .modal-close:hover {
+        color: var(--ink);
+      }
+      .modal-body {
+        padding: 1.25rem 1.5rem;
+      }
+      .modal-foot {
+        padding: 1rem 1.5rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: flex-end;
+        gap: 9px;
+      }
+      .form-row {
+        display: grid;
+        gap: 0.875rem;
+        margin-bottom: 0.875rem;
+      }
+      .form-row.cols2 {
+        grid-template-columns: 1fr 1fr;
+      }
+      .form-row.cols3 {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+      textarea.form-input {
+        resize: vertical;
+        min-height: 75px;
+      }
+      select.form-input {
+        cursor: pointer;
+      }
+
+      /* ===== ORDER DETAIL ===== */
+      .order-detail-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+      }
+      .detail-section {
+        background: #fafaf8;
+        border-radius: 11px;
+        padding: 1.1rem;
+      }
+      .detail-section-title {
+        font-size: 0.67rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.83rem;
+        margin-bottom: 7px;
+      }
+      .detail-row .label {
+        color: var(--muted);
+      }
+      .detail-row .value {
+        font-weight: 600;
+        text-align: right;
+        max-width: 60%;
+      }
+      .order-items-list {
+        margin-top: 1.25rem;
+      }
+      .order-item-row {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 11px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .order-item-row:last-child {
+        border-bottom: none;
+      }
+      .order-item-img {
+        width: 52px;
+        height: 52px;
+        border-radius: 9px;
+        object-fit: cover;
+        background: #f5f1eb;
+        flex-shrink: 0;
+      }
+      .order-item-name {
+        font-weight: 600;
+        font-size: 0.85rem;
+      }
+      .order-item-meta {
+        font-size: 0.73rem;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .order-item-price {
+        font-weight: 700;
+        font-size: 0.875rem;
+        flex-shrink: 0;
+      }
+      .timeline-item {
+        display: flex;
+        gap: 11px;
+        padding-bottom: 14px;
+        position: relative;
+      }
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: 8px;
+        top: 21px;
+        bottom: 0;
+        width: 2px;
+        background: var(--border);
+      }
+      .timeline-item:last-child::before {
+        display: none;
+      }
+      .timeline-dot {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--ink);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.52rem;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+      .timeline-dot.pending {
+        background: #d97706;
+      }
+      .timeline-dot.processing {
+        background: var(--blue);
+      }
+      .timeline-dot.shipped {
+        background: #0891b2;
+      }
+      .timeline-dot.completed {
+        background: var(--green);
+      }
+      .timeline-dot.cancelled {
+        background: #dc2626;
+      }
+      .timeline-text {
+        font-size: 0.78rem;
+        font-weight: 600;
+        text-transform: capitalize;
+      }
+      .timeline-time {
+        font-size: 0.68rem;
+        color: var(--muted);
+      }
+
+      /* ===== INVENTORY ===== */
+      .inv-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .inv-card {
+        background: var(--card);
+        border-radius: 14px;
+        padding: 1.25rem;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 0.875rem;
+      }
+      .inv-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        flex-shrink: 0;
+      }
+
+      /* ===== ANALYTICS ===== */
+      .analytics-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      /* ===== LOADING ===== */
+      .loading-row td {
+        text-align: center;
+        padding: 2.5rem;
+        color: var(--muted);
+      }
+      .spinner-sm {
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        border: 2px solid rgba(0, 0, 0, 0.15);
+        border-radius: 50%;
+        border-top-color: var(--ink);
+        animation: spin 0.8s ease-in-out infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ===== TOAST ===== */
+      .toast-wrap {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1rem;
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+        max-width: calc(100vw - 2rem);
+      }
+      .toast {
+        background: var(--ink);
+        color: white;
+        padding: 13px 18px;
+        border-radius: 11px;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        min-width: 240px;
+        font-size: 0.85rem;
+        animation: toastIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-left: 4px solid var(--gold);
+      }
+      .toast.error {
+        border-color: var(--accent2);
+      }
+      .toast.success {
+        border-color: #22c55e;
+      }
+      @keyframes toastIn {
+        from {
+          transform: translateX(120%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      .toast-out {
+        animation: toastOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+      @keyframes toastOut {
+        to {
+          transform: translateX(120%);
+          opacity: 0;
+        }
+      }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 1200px) {
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .charts-grid {
+          grid-template-columns: 1fr;
+        }
+        .analytics-row {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 900px) {
+        :root {
+          --sidebar-w: 0px;
+        }
+        .sidebar {
+          transform: translateX(-100%);
+          width: 240px;
+        }
+        .sidebar.open {
+          transform: translateX(0);
+        }
+        .sidebar-close-btn {
+          display: flex;
+        }
+        .hamburger-btn {
+          display: flex;
+        }
+        .main-content {
+          margin-left: 0;
+        }
+        .topbar-time {
+          display: none;
+        }
+      }
+      @media (max-width: 640px) {
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .inv-grid {
+          grid-template-columns: 1fr;
+        }
+        .order-detail-grid {
+          grid-template-columns: 1fr;
+        }
+        .form-row.cols2 {
+          grid-template-columns: 1fr;
+        }
+        .form-row.cols3 {
+          grid-template-columns: 1fr 1fr;
+        }
+        .page-body {
+          padding: 0.875rem;
+        }
+        .table-head {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .search-box input {
+          width: 100%;
+        }
+        .modal-overlay {
+          align-items: flex-end;
+          padding: 0;
+        }
+        .modal-box {
+          border-radius: 16px 16px 0 0;
+          max-height: 93vh;
+        }
+        .modal-overlay.open .modal-box {
+          transform: scale(1) translateY(0);
+        }
+        .store-link span {
+          display: none;
+        }
+        .store-link {
+          padding: 6px 10px;
+        }
+      }
+      @media (max-width: 420px) {
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+        .form-row.cols3 {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ===== LOGIN ===== -->
+    <div id="loginPage">
+      <div class="login-page">
+        <div class="login-card">
+          <div class="login-logo">
+            <div class="login-icon"><i class="fas fa-shoe-prints"></i></div>
+            <div>
+              <div class="login-brand">Premium Shoe Store</div>
+              <div class="login-sub">Admin Portal</div>
+            </div>
+          </div>
+          <h2 class="login-title">Welcome back</h2>
+          <p class="login-desc">
+            Sign in with your administrator credentials to continue.
+          </p>
+          <div class="form-group">
+            <label class="form-label">Username</label
+            ><input
+              class="form-input"
+              type="text"
+              id="adminUser"
+              placeholder="admin"
+            />
+            <p class="form-error" id="loginUserErr"></p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label
+            ><input
+              class="form-input"
+              type="password"
+              id="adminPass"
+              placeholder="••••••••"
+              onkeydown="if (event.key === 'Enter') doAdminLogin();"
+            />
+            <p class="form-error" id="loginPassErr"></p>
+          </div>
+          <p
+            class="form-error"
+            id="loginGeneralErr"
+            style="margin-bottom: 9px"
+          ></p>
+          <button class="btn-login" onclick="doAdminLogin()">
+            <i class="fas fa-lock"></i> Sign In to Dashboard
+          </button>
+          <p class="login-hint">
+            Default credentials: <strong>admin</strong> /
+            <strong>admin123</strong><br />Change these in Settings after
+            logging in.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ADMIN APP ===== -->
+    <div id="adminApp" style="display: none">
+      <div class="admin-layout">
+        <!-- SIDEBAR OVERLAY (mobile) -->
+        <div
+          class="sidebar-overlay"
+          id="sidebarOverlay"
+          onclick="closeSidebar()"
+        ></div>
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="adminSidebar">
+          <div class="sidebar-head">
+            <div class="sidebar-logo">
+              <div class="sidebar-icon"><i class="fas fa-shoe-prints"></i></div>
+              <div>
+                <div class="sidebar-brand">Premium Shoe</div>
+                <div class="sidebar-tag">Admin Panel</div>
+              </div>
+            </div>
+            <button class="sidebar-close-btn" onclick="closeSidebar()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <nav class="sidebar-nav">
+            <div class="nav-section">Main</div>
+            <button
+              class="nav-item active"
+              onclick="goTo('dashboard')"
+              data-page="dashboard"
+            >
+              <i class="fas fa-chart-line"></i><span>Dashboard</span>
+            </button>
+            <button
+              class="nav-item"
+              onclick="goTo('orders')"
+              data-page="orders"
+            >
+              <i class="fas fa-shopping-bag"></i><span>Orders</span
+              ><span class="nav-badge" id="pendingBadge" style="display: none"
+                >0</span
+              >
+            </button>
+            <div class="nav-section">Catalogue</div>
+            <button
+              class="nav-item"
+              onclick="goTo('products')"
+              data-page="products"
+            >
+              <i class="fas fa-box"></i><span>Products</span>
+            </button>
+            <button
+              class="nav-item"
+              onclick="goTo('inventory')"
+              data-page="inventory"
+            >
+              <i class="fas fa-warehouse"></i><span>Inventory</span
+              ><span class="nav-badge" id="lowStockBadge" style="display: none"
+                >!</span
+              >
+            </button>
+            <div class="nav-section">Insights</div>
+            <button
+              class="nav-item"
+              onclick="goTo('analytics')"
+              data-page="analytics"
+            >
+              <i class="fas fa-chart-bar"></i><span>Analytics</span>
+            </button>
+            <button
+              class="nav-item"
+              onclick="goTo('customers')"
+              data-page="customers"
+            >
+              <i class="fas fa-users"></i><span>Customers</span>
+            </button>
+            <div class="nav-section">System</div>
+            <button
+              class="nav-item"
+              onclick="goTo('settings')"
+              data-page="settings"
+            >
+              <i class="fas fa-cog"></i><span>Settings</span>
+            </button>
+          </nav>
+          <div class="sidebar-foot">
+            <div class="admin-info">
+              <div class="admin-avatar" id="sidebarAvatar">A</div>
+              <div>
+                <div class="admin-name" id="sidebarName">Admin</div>
+                <div class="admin-role">Administrator</div>
+              </div>
+            </div>
+            <button
+              class="nav-item"
+              onclick="doAdminLogout()"
+              style="color: #f87171"
+            >
+              <i class="fas fa-sign-out-alt"></i><span>Logout</span>
+            </button>
+          </div>
+        </aside>
+
+        <!-- MAIN -->
+        <div class="main-content">
+          <div class="topbar">
+            <div class="topbar-left">
+              <button class="hamburger-btn" onclick="openSidebar()">
+                <i class="fas fa-bars"></i>
+              </button>
+              <span class="topbar-title" id="topbarTitle">Dashboard</span>
+            </div>
+            <div class="topbar-right">
+              <span class="topbar-time" id="topbarTime"></span>
+              <a href="index.html" target="_blank" class="store-link"
+                ><i class="fas fa-external-link-alt"></i
+                ><span>View Store</span></a
+              >
+            </div>
+          </div>
+
+          <div class="page-body">
+            <!-- DASHBOARD -->
+            <div class="section active" id="page-dashboard">
+              <h1 class="page-title">Dashboard</h1>
+              <p class="page-sub" id="dashGreeting">
+                Loading your store overview…
+              </p>
+              <div class="stats-grid" id="statsGrid"></div>
+              <div class="charts-grid">
+                <div class="chart-card">
+                  <div class="chart-head">
+                    <div>
+                      <div class="chart-title">Revenue Overview</div>
+                      <div class="chart-sub">Sales over time</div>
+                    </div>
+                    <select
+                      class="time-select"
+                      id="revenueRange"
+                      onchange="renderRevenueChart()"
+                    >
+                      <option value="7">Last 7 Days</option>
+                      <option value="30" selected>Last 30 Days</option>
+                      <option value="90">Last 3 Months</option>
+                      <option value="365">This Year</option>
+                    </select>
+                  </div>
+                  <canvas id="revenueChart" height="90"></canvas>
+                </div>
+                <div class="chart-card">
+                  <div class="chart-head">
+                    <div>
+                      <div class="chart-title">Orders by Status</div>
+                      <div class="chart-sub">Current distribution</div>
+                    </div>
+                  </div>
+                  <canvas id="statusChart" height="160"></canvas>
+                </div>
+              </div>
+              <div class="table-card">
+                <div class="table-head">
+                  <span class="table-title">Recent Orders</span
+                  ><button
+                    class="btn btn-ghost btn-sm"
+                    onclick="goTo('orders')"
+                  >
+                    <i class="fas fa-arrow-right"></i> View All
+                  </button>
+                </div>
+                <div class="table-scroll">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Location</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="dashOrdersBody">
+                      <tr class="loading-row">
+                        <td colspan="8">
+                          <span class="spinner-sm"></span> Loading orders…
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- ORDERS -->
+            <div class="section" id="page-orders">
+              <h1 class="page-title">Orders</h1>
+              <p class="page-sub">Manage and track all customer orders</p>
+              <div
+                style="
+                  display: flex;
+                  gap: 8px;
+                  flex-wrap: wrap;
+                  margin-bottom: 1.25rem;
+                  align-items: center;
+                "
+              >
+                <div class="search-box">
+                  <i class="fas fa-search"></i
+                  ><input
+                    type="text"
+                    id="orderSearch"
+                    placeholder="Search orders…"
+                    oninput="renderOrdersTable()"
+                  />
+                </div>
+                <select
+                  class="time-select"
+                  id="orderStatusFilter"
+                  onchange="renderOrdersTable()"
+                >
+                  <option value="all">All Statuses</option>
+                  <option value="pending">Pending</option>
+                  <option value="processing">Processing</option>
+                  <option value="shipped">Shipped</option>
+                  <option value="completed">Completed</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+                <select
+                  class="time-select"
+                  id="orderDateFilter"
+                  onchange="renderOrdersTable()"
+                >
+                  <option value="all">All Time</option>
+                  <option value="today">Today</option>
+                  <option value="week">This Week</option>
+                  <option value="month">This Month</option>
+                </select>
+                <button
+                  class="btn btn-ghost btn-sm"
+                  onclick="refreshOrders()"
+                  style="margin-left: auto"
+                >
+                  <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+                <span
+                  style="font-size: 0.78rem; color: var(--muted)"
+                  id="orderCount"
+                  >0 orders</span
+                >
+              </div>
+              <div class="table-card">
+                <div class="table-scroll">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Location</th>
+                        <th>Phone</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Payment</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                      <tr class="loading-row">
+                        <td colspan="10">
+                          <span class="spinner-sm"></span> Loading orders…
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- PRODUCTS -->
+            <div class="section" id="page-products">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: flex-start;
+                  margin-bottom: 0.5rem;
+                  flex-wrap: wrap;
+                  gap: 0.875rem;
+                "
+              >
+                <div>
+                  <h1 class="page-title">Products</h1>
+                  <p class="page-sub" style="margin-bottom: 0">
+                    Manage your catalogue
+                  </p>
+                </div>
+                <button class="btn btn-primary" onclick="openProductModal()">
+                  <i class="fas fa-plus"></i> Add Product
+                </button>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  gap: 8px;
+                  flex-wrap: wrap;
+                  margin-bottom: 1.25rem;
+                  align-items: center;
+                "
+              >
+                <div class="search-box">
+                  <i class="fas fa-search"></i
+                  ><input
+                    type="text"
+                    id="productSearch"
+                    placeholder="Search products…"
+                    oninput="renderProductsTable()"
+                  />
+                </div>
+                <select
+                  class="time-select"
+                  id="productCategoryFilter"
+                  onchange="renderProductsTable()"
+                >
+                  <option value="all">All Categories</option>
+                  <option value="formal">Formal</option>
+                  <option value="casual">Casual</option>
+                  <option value="sports">Sports</option>
+                  <option value="boots">Boots</option>
+                </select>
+                <select
+                  class="time-select"
+                  id="productStockFilter"
+                  onchange="renderProductsTable()"
+                >
+                  <option value="all">All Stock</option>
+                  <option value="in">In Stock</option>
+                  <option value="low">Low Stock (≤5)</option>
+                  <option value="out">Out of Stock</option>
+                </select>
+              </div>
+              <div class="table-card">
+                <div class="table-scroll">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Sold</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="productsTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- INVENTORY -->
+            <div class="section" id="page-inventory">
+              <h1 class="page-title">Inventory</h1>
+              <p class="page-sub">Monitor stock levels and reorder alerts</p>
+              <div class="inv-grid">
+                <div class="inv-card">
+                  <div
+                    class="inv-icon"
+                    style="background: #fee2e2; color: #dc2626"
+                  >
+                    <i class="fas fa-exclamation-circle"></i>
+                  </div>
+                  <div>
+                    <div
+                      style="
+                        font-size: 0.72rem;
+                        color: var(--muted);
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.08em;
+                      "
+                    >
+                      Out of Stock
+                    </div>
+                    <div
+                      style="
+                        font-family: &quot;Cormorant Garamond&quot;, serif;
+                        font-size: 1.75rem;
+                        font-weight: 700;
+                      "
+                      id="inv-out"
+                    >
+                      0
+                    </div>
+                  </div>
+                </div>
+                <div class="inv-card">
+                  <div
+                    class="inv-icon"
+                    style="background: #fff7e6; color: #d97706"
+                  >
+                    <i class="fas fa-bell"></i>
+                  </div>
+                  <div>
+                    <div
+                      style="
+                        font-size: 0.72rem;
+                        color: var(--muted);
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.08em;
+                      "
+                    >
+                      Low Stock (≤5)
+                    </div>
+                    <div
+                      style="
+                        font-family: &quot;Cormorant Garamond&quot;, serif;
+                        font-size: 1.75rem;
+                        font-weight: 700;
+                      "
+                      id="inv-low"
+                    >
+                      0
+                    </div>
+                  </div>
+                </div>
+                <div class="inv-card">
+                  <div
+                    class="inv-icon"
+                    style="background: var(--green-bg); color: var(--green)"
+                  >
+                    <i class="fas fa-check-circle"></i>
+                  </div>
+                  <div>
+                    <div
+                      style="
+                        font-size: 0.72rem;
+                        color: var(--muted);
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.08em;
+                      "
+                    >
+                      Healthy Stock
+                    </div>
+                    <div
+                      style="
+                        font-family: &quot;Cormorant Garamond&quot;, serif;
+                        font-size: 1.75rem;
+                        font-weight: 700;
+                      "
+                      id="inv-ok"
+                    >
+                      0
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="table-card">
+                <div class="table-head">
+                  <span class="table-title">Stock Levels</span>
+                </div>
+                <div class="table-scroll">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Stock Level</th>
+                        <th>Units</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="inventoryBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- ANALYTICS -->
+            <div class="section" id="page-analytics">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-bottom: 0.5rem;
+                  flex-wrap: wrap;
+                  gap: 0.875rem;
+                "
+              >
+                <div>
+                  <h1 class="page-title">Analytics</h1>
+                  <p class="page-sub" style="margin-bottom: 0">
+                    Sales and performance insights
+                  </p>
+                </div>
+                <select
+                  class="time-select"
+                  id="analyticsRange"
+                  onchange="renderAnalytics()"
+                  style="font-size: 0.85rem; padding: 7px 12px"
+                >
+                  <option value="7">Last 7 Days</option>
+                  <option value="30" selected>Last 30 Days</option>
+                  <option value="90">Last 3 Months</option>
+                  <option value="365">This Year</option>
+                  <option value="all">All Time</option>
+                </select>
+              </div>
+              <div class="stats-grid" id="analyticsStats"></div>
+              <div class="analytics-row">
+                <div class="chart-card">
+                  <div class="chart-head">
+                    <div>
+                      <div class="chart-title">Daily Revenue</div>
+                      <div class="chart-sub" id="analyticsDailySubtitle"></div>
+                    </div>
+                  </div>
+                  <canvas id="analyticsDailyChart" height="100"></canvas>
+                </div>
+                <div class="chart-card">
+                  <div class="chart-head">
+                    <div>
+                      <div class="chart-title">Revenue by Category</div>
+                      <div class="chart-sub">Sales mix</div>
+                    </div>
+                  </div>
+                  <canvas id="analyticsCatChart" height="160"></canvas>
+                </div>
+              </div>
+              <div class="analytics-row">
+                <div class="chart-card">
+                  <div class="chart-head">
+                    <div>
+                      <div class="chart-title">Order Volume</div>
+                      <div class="chart-sub">Orders per day</div>
+                    </div>
+                  </div>
+                  <canvas id="analyticsOrderChart" height="100"></canvas>
+                </div>
+                <div class="chart-card">
+                  <div class="chart-head">
+                    <div>
+                      <div class="chart-title">Payment Methods</div>
+                      <div class="chart-sub">How customers pay</div>
+                    </div>
+                  </div>
+                  <canvas id="analyticsPayChart" height="160"></canvas>
+                </div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-head">
+                  <div>
+                    <div class="chart-title">Top Selling Products</div>
+                    <div class="chart-sub">Ranked by units sold</div>
+                  </div>
+                </div>
+                <canvas id="analyticsTopChart" height="60"></canvas>
+              </div>
+            </div>
+
+            <!-- CUSTOMERS -->
+            <div class="section" id="page-customers">
+              <h1 class="page-title">Customers</h1>
+              <p class="page-sub">Registered customer accounts</p>
+              <div
+                style="
+                  display: flex;
+                  gap: 8px;
+                  margin-bottom: 1.25rem;
+                  flex-wrap: wrap;
+                "
+              >
+                <div class="search-box">
+                  <i class="fas fa-search"></i
+                  ><input
+                    type="text"
+                    id="customerSearch"
+                    placeholder="Search customers…"
+                    oninput="renderCustomers()"
+                  />
+                </div>
+              </div>
+              <div class="table-card">
+                <div class="table-scroll">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Customer</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Orders</th>
+                        <th>Total Spent</th>
+                        <th>Joined</th>
+                      </tr>
+                    </thead>
+                    <tbody id="customersBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- SETTINGS -->
+            <div class="section" id="page-settings">
+              <h1 class="page-title">Settings</h1>
+              <p class="page-sub">Configure your admin account</p>
+              <div style="max-width: 480px">
+                <div class="chart-card" style="margin-bottom: 1.25rem">
+                  <div class="chart-head">
+                    <div class="chart-title">Change Admin Credentials</div>
+                  </div>
+                  <div style="padding: 0 0 1rem">
+                    <div class="form-group">
+                      <label class="form-label">New Username</label
+                      ><input
+                        class="form-input"
+                        type="text"
+                        id="settingsUser"
+                        placeholder="Enter new username"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label"
+                        >Current Password (to confirm)</label
+                      ><input
+                        class="form-input"
+                        type="password"
+                        id="settingsCurPass"
+                        placeholder="••••••••"
+                      />
+                      <p class="form-error" id="settingsCurPassErr"></p>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">New Password</label
+                      ><input
+                        class="form-input"
+                        type="password"
+                        id="settingsNewPass"
+                        placeholder="Min. 6 characters"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Confirm New Password</label
+                      ><input
+                        class="form-input"
+                        type="password"
+                        id="settingsConfPass"
+                        placeholder="Repeat new password"
+                      />
+                      <p class="form-error" id="settingsPassErr"></p>
+                    </div>
+                    <button class="btn btn-primary" onclick="saveSettings()">
+                      <i class="fas fa-save"></i> Save Changes
+                    </button>
+                  </div>
+                </div>
+                <div class="chart-card">
+                  <div class="chart-head">
+                    <div class="chart-title">Danger Zone</div>
+                  </div>
+                  <div style="padding: 0 0 1rem">
+                    <p
+                      style="
+                        font-size: 0.85rem;
+                        color: var(--muted);
+                        margin-bottom: 1rem;
+                      "
+                    >
+                      These actions are irreversible. Please be careful.
+                    </p>
+                    <button class="btn btn-danger" onclick="resetProducts()">
+                      <i class="fas fa-undo"></i> Reset Products to Default
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT MODAL -->
+    <div
+      class="modal-overlay"
+      id="productModal"
+      onclick="if (event.target.id === 'productModal') closeProductModal();"
+    >
+      <div class="modal-box" style="max-width: 580px">
+        <div class="modal-hdr">
+          <h3 id="productModalTitle">Add Product</h3>
+          <button class="modal-close" onclick="closeProductModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="prodId" />
+          <div class="form-row cols2">
+            <div>
+              <label class="form-label">Product Name *</label
+              ><input
+                class="form-input"
+                type="text"
+                id="prodName"
+                placeholder="e.g. Royal Oxford Classic"
+              />
+              <p class="form-error" id="prodNameErr"></p>
+            </div>
+            <div>
+              <label class="form-label">Brand *</label
+              ><input
+                class="form-input"
+                type="text"
+                id="prodBrand"
+                placeholder="e.g. Heritage Collection"
+              />
+              <p class="form-error" id="prodBrandErr"></p>
+            </div>
+          </div>
+          <div class="form-row cols3">
+            <div>
+              <label class="form-label">Price (₦) *</label
+              ><input
+                class="form-input"
+                type="number"
+                id="prodPrice"
+                placeholder="45000"
+                min="0"
+              />
+              <p class="form-error" id="prodPriceErr"></p>
+            </div>
+            <div>
+              <label class="form-label">Quantity *</label
+              ><input
+                class="form-input"
+                type="number"
+                id="prodQty"
+                placeholder="20"
+                min="0"
+              />
+              <p class="form-error" id="prodQtyErr"></p>
+            </div>
+            <div>
+              <label class="form-label">Category *</label
+              ><select class="form-input" id="prodCategory">
+                <option value="formal">Formal</option>
+                <option value="casual">Casual</option>
+                <option value="sports">Sports</option>
+                <option value="boots">Boots</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label class="form-label">Image URL</label
+              ><input
+                class="form-input"
+                type="url"
+                id="prodImage"
+                placeholder="https://images.unsplash.com/…"
+              />
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label class="form-label">Description</label
+              ><textarea
+                class="form-input"
+                id="prodDesc"
+                placeholder="Product description for customers…"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-ghost" onclick="closeProductModal()">
+            Cancel</button
+          ><button class="btn btn-primary" onclick="saveProduct()">
+            <i class="fas fa-save"></i> Save Product
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORDER DETAIL MODAL -->
+    <div
+      class="modal-overlay"
+      id="orderDetailModal"
+      onclick="if (event.target.id === 'orderDetailModal') closeOrderDetail();"
+    >
+      <div class="modal-box" style="max-width: 740px">
+        <div class="modal-hdr">
+          <h3 id="orderDetailTitle">Order Details</h3>
+          <button class="modal-close" onclick="closeOrderDetail()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body" id="orderDetailBody"></div>
+        <div class="modal-foot" id="orderDetailFoot"></div>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast-wrap" id="toastWrap"></div>
+
+    <!-- FIREBASE -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+        doc,
+        updateDoc,
+        query,
+        orderBy,
+      } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyDVAPiXAWtUJWUdZsMLoXLupw8wDkHDed4",
+        authDomain: "premiumshoestoree.firebaseapp.com",
+        projectId: "premiumshoestoree",
+        storageBucket: "premiumshoestoree.firebasestorage.app",
+        messagingSenderId: "153382305968",
+        appId: "1:153382305968:web:f39f2a3b9420258620fb75",
+        measurementId: "G-XP4N5G4P0P",
+      };
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      window.getAllOrdersFromFirebase = async function () {
+        try {
+          const q = query(collection(db, "orders"), orderBy("date", "desc"));
+          const snap = await getDocs(q);
+          return snap.docs.map((d) => ({ ...d.data(), _docId: d.id }));
+        } catch (e) {
+          console.error("Firebase getAllOrders error:", e);
+          return [];
+        }
+      };
+      window.updateOrderStatusInFirebase = async function (
+        docId,
+        status,
+        statusHistory,
+      ) {
+        try {
+          await updateDoc(doc(db, "orders", docId), { status, statusHistory });
+          return true;
+        } catch (e) {
+          console.error("Firebase updateStatus error:", e);
+          return false;
+        }
+      };
+      window._firebaseAdminReady = true;
+      document.dispatchEvent(new Event("firebaseAdminReady"));
+    </script>
+
+    <script>
+      // ============ LOCAL STORAGE ============
+      const DB = {
+        get: (k, def) => {
+          try {
+            const v = localStorage.getItem(k);
+            return v !== null ? JSON.parse(v) : def;
+          } catch {
+            return def;
+          }
+        },
+        set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
+      };
+      function getProducts() {
+        return DB.get("ps_products", []);
+      }
+      function getUsers() {
+        return DB.get("ps_users", []);
+      }
+      function getAdminCreds() {
+        return DB.get("ps_admin", { username: "admin", password: "admin123" });
+      }
+      function fmt(n) {
+        return (
+          "₦" + Number(n).toLocaleString("en-NG", { minimumFractionDigits: 0 })
+        );
+      }
+      function fmtDate(iso) {
+        return new Date(iso).toLocaleDateString("en-NG", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        });
+      }
+      function fmtDateTime(iso) {
+        return new Date(iso).toLocaleString("en-NG", {
+          day: "numeric",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+
+      let _cachedOrders = [];
+      async function loadAllOrders() {
+        if (window.getAllOrdersFromFirebase) {
+          _cachedOrders = await window.getAllOrdersFromFirebase();
+        } else {
+          await new Promise((r) => {
+            document.addEventListener("firebaseAdminReady", r, { once: true });
+            setTimeout(r, 5000);
+          });
+          if (window.getAllOrdersFromFirebase)
+            _cachedOrders = await window.getAllOrdersFromFirebase();
+        }
+        return _cachedOrders;
+      }
+      function getCachedOrders() {
+        return _cachedOrders;
+      }
+
+      // ============ SIDEBAR ============
+      function openSidebar() {
+        document.getElementById("adminSidebar").classList.add("open");
+        document.getElementById("sidebarOverlay").classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+      function closeSidebar() {
+        document.getElementById("adminSidebar").classList.remove("open");
+        document.getElementById("sidebarOverlay").classList.remove("open");
+        document.body.style.overflow = "";
+      }
+
+      // ============ AUTH ============
+      function doAdminLogin() {
+        const u = document.getElementById("adminUser").value.trim();
+        const p = document.getElementById("adminPass").value;
+        ["loginUserErr", "loginPassErr", "loginGeneralErr"].forEach(
+          (id) => (document.getElementById(id).textContent = ""),
+        );
+        if (!u) {
+          document.getElementById("loginUserErr").textContent =
+            "Username required";
+          return;
+        }
+        if (!p) {
+          document.getElementById("loginPassErr").textContent =
+            "Password required";
+          return;
+        }
+        const creds = getAdminCreds();
+        if (u !== creds.username || p !== creds.password) {
+          document.getElementById("loginGeneralErr").textContent =
+            "Invalid credentials. Access denied.";
+          return;
+        }
+        DB.set("ps_adminSession", {
+          loggedIn: true,
+          username: u,
+          loginTime: new Date().toISOString(),
+        });
+        showApp();
+      }
+      function doAdminLogout() {
+        DB.set("ps_adminSession", null);
+        document.getElementById("adminApp").style.display = "none";
+        document.getElementById("loginPage").style.display = "";
+        document.getElementById("adminUser").value = "";
+        document.getElementById("adminPass").value = "";
+        closeSidebar();
+      }
+      function showApp() {
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("adminApp").style.display = "";
+        const sess = DB.get("ps_adminSession", {});
+        document.getElementById("sidebarAvatar").textContent = (sess.username ||
+          "A")[0].toUpperCase();
+        document.getElementById("sidebarName").textContent =
+          sess.username || "Admin";
+        updateTopbarTime();
+        setInterval(updateTopbarTime, 60000);
+        loadDashboard();
+      }
+      function updateTopbarTime() {
+        const now = new Date();
+        document.getElementById("topbarTime").textContent =
+          now.toLocaleTimeString("en-NG", {
+            hour: "2-digit",
+            minute: "2-digit",
+          }) +
+          " — " +
+          now.toLocaleDateString("en-NG", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+          });
+        const h = now.getHours();
+        const greet =
+          h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
+        const el = document.getElementById("dashGreeting");
+        if (el) el.textContent = greet + ". Here's your store overview.";
+      }
+      window.addEventListener("DOMContentLoaded", () => {
+        const sess = DB.get("ps_adminSession", null);
+        if (sess && sess.loggedIn) showApp();
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") {
+            closeProductModal();
+            closeOrderDetail();
+          }
+        });
+      });
+
+      // ============ NAVIGATION ============
+      let chartInstances = {};
+      function goTo(page) {
+        document
+          .querySelectorAll(".section")
+          .forEach((s) => s.classList.remove("active"));
+        document.getElementById("page-" + page).classList.add("active");
+        document
+          .querySelectorAll(".nav-item")
+          .forEach((b) => b.classList.remove("active"));
+        const navBtn = document.querySelector(`.nav-item[data-page="${page}"]`);
+        if (navBtn) navBtn.classList.add("active");
+        document.getElementById("topbarTitle").textContent =
+          {
+            dashboard: "Dashboard",
+            orders: "Orders",
+            products: "Products",
+            inventory: "Inventory",
+            analytics: "Analytics",
+            customers: "Customers",
+            settings: "Settings",
+          }[page] || page;
+        // Close sidebar on mobile navigation
+        if (window.innerWidth <= 900) closeSidebar();
+        if (page === "dashboard") loadDashboard();
+        if (page === "orders") loadAllOrders().then(() => renderOrdersTable());
+        if (page === "products") renderProductsTable();
+        if (page === "inventory") renderInventory();
+        if (page === "analytics") loadAllOrders().then(() => renderAnalytics());
+        if (page === "customers") renderCustomers();
+        if (page === "settings") loadSettings();
+      }
+      function refreshOrders() {
+        document.getElementById("ordersTableBody").innerHTML =
+          '<tr class="loading-row"><td colspan="10"><span class="spinner-sm"></span> Refreshing…</td></tr>';
+        loadAllOrders().then(() => {
+          renderOrdersTable();
+          toast("Orders refreshed", "success");
+          updateBadges();
+        });
+      }
+
+      // ============ BADGES ============
+      function updateBadges() {
+        const orders = getCachedOrders();
+        const pending = orders.filter((o) => o.status === "pending").length;
+        const pb = document.getElementById("pendingBadge");
+        pb.textContent = pending;
+        pb.style.display = pending ? "" : "none";
+        const products = getProducts();
+        const low = products.filter((p) => p.quantity <= 5).length;
+        document.getElementById("lowStockBadge").style.display = low
+          ? ""
+          : "none";
+      }
+
+      // ============ DASHBOARD ============
+      async function loadDashboard() {
+        document.getElementById("dashOrdersBody").innerHTML =
+          '<tr class="loading-row"><td colspan="8"><span class="spinner-sm"></span> Loading orders…</td></tr>';
+        await loadAllOrders();
+        const orders = getCachedOrders();
+        const now = new Date();
+        const todayStr = now.toDateString();
+        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+        const todayOrders = orders.filter(
+          (o) => new Date(o.date).toDateString() === todayStr,
+        );
+        const todayRevenue = todayOrders.reduce((s, o) => s + o.total, 0);
+        const monthOrders = orders.filter(
+          (o) => new Date(o.date) >= monthStart,
+        );
+        const monthRevenue = monthOrders.reduce((s, o) => s + o.total, 0);
+        const totalRevenue = orders.reduce((s, o) => s + o.total, 0);
+        const pendingCount = orders.filter(
+          (o) => o.status === "pending",
+        ).length;
+        document.getElementById("statsGrid").innerHTML = `
+          <div class="stat-card"><div class="stat-top"><div><div class="stat-label">Today's Revenue</div></div><div class="stat-icon" style="background:#d4f5e2;color:#16a34a;"><i class="fas fa-naira-sign"></i></div></div><div class="stat-value">${fmt(todayRevenue)}</div><div class="stat-change neutral"><i class="fas fa-calendar-day"></i>${todayOrders.length} orders today</div></div>
+          <div class="stat-card"><div class="stat-top"><div><div class="stat-label">Monthly Revenue</div></div><div class="stat-icon" style="background:var(--blue-bg);color:var(--blue);"><i class="fas fa-chart-line"></i></div></div><div class="stat-value">${fmt(monthRevenue)}</div><div class="stat-change neutral"><i class="fas fa-calendar-alt"></i>${monthOrders.length} orders</div></div>
+          <div class="stat-card"><div class="stat-top"><div><div class="stat-label">Total Revenue</div></div><div class="stat-icon" style="background:var(--gold-bg);color:var(--gold);"><i class="fas fa-coins"></i></div></div><div class="stat-value">${fmt(totalRevenue)}</div><div class="stat-change neutral"><i class="fas fa-shopping-bag"></i>${orders.length} total</div></div>
+          <div class="stat-card"><div class="stat-top"><div><div class="stat-label">Pending Orders</div></div><div class="stat-icon" style="background:#fee2e2;color:#dc2626;"><i class="fas fa-clock"></i></div></div><div class="stat-value">${pendingCount}</div><div class="stat-change ${pendingCount > 0 ? "down" : "up"}"><i class="fas fa-${pendingCount > 0 ? "exclamation-triangle" : "check"}"></i>${pendingCount > 0 ? "Needs attention" : "All clear"}</div></div>
+        `;
+        renderRevenueChart();
+        renderStatusChart();
+        renderDashOrders();
+        updateBadges();
+      }
+
+      let revenueChartInst = null,
+        statusChartInst = null;
+      function renderRevenueChart() {
+        const range = parseInt(
+          document.getElementById("revenueRange")?.value || 30,
+        );
+        const orders = getCachedOrders();
+        const now = new Date();
+        let step = 1,
+          format = (d) =>
+            d.toLocaleDateString("en-NG", { day: "numeric", month: "short" });
+        if (range > 90) {
+          step = 30;
+          format = (d) => d.toLocaleDateString("en-NG", { month: "short" });
+        } else if (range > 30) step = 7;
+        const buckets = {};
+        for (let i = range; i >= 0; i -= step) {
+          const d = new Date(now);
+          d.setDate(d.getDate() - i);
+          buckets[format(d)] = 0;
+        }
+        orders.forEach((o) => {
+          const d = new Date(o.date),
+            diff = Math.floor((now - d) / 86400000);
+          if (diff > range) return;
+          const k = format(d);
+          if (k in buckets) buckets[k] += o.total;
+        });
+        const labels = Object.keys(buckets),
+          data = Object.values(buckets);
+        const ctx = document.getElementById("revenueChart").getContext("2d");
+        if (revenueChartInst) revenueChartInst.destroy();
+        revenueChartInst = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels,
+            datasets: [
+              {
+                label: "Revenue",
+                data,
+                backgroundColor: "rgba(201,168,76,0.7)",
+                borderColor: "#c9a84c",
+                borderWidth: 2,
+                borderRadius: 5,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: { callback: (v) => "₦" + Number(v).toLocaleString() },
+              },
+              x: { grid: { display: false } },
+            },
+          },
+        });
+      }
+      function renderStatusChart() {
+        const orders = getCachedOrders();
+        const counts = {
+          pending: 0,
+          processing: 0,
+          shipped: 0,
+          completed: 0,
+          cancelled: 0,
+        };
+        orders.forEach((o) => {
+          if (o.status in counts) counts[o.status]++;
+        });
+        const labels = Object.keys(counts).filter((k) => counts[k] > 0);
+        const data = labels.map((k) => counts[k]);
+        const colours = {
+          pending: "#f59e0b",
+          processing: "#3b82f6",
+          shipped: "#06b6d4",
+          completed: "#16a34a",
+          cancelled: "#dc2626",
+        };
+        const ctx = document.getElementById("statusChart").getContext("2d");
+        if (statusChartInst) statusChartInst.destroy();
+        if (!data.length) return;
+        statusChartInst = new Chart(ctx, {
+          type: "doughnut",
+          data: {
+            labels,
+            datasets: [
+              {
+                data,
+                backgroundColor: labels.map((k) => colours[k]),
+                borderWidth: 0,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            cutout: "65%",
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: { font: { size: 10 }, padding: 10 },
+              },
+            },
+          },
+        });
+      }
+      function renderDashOrders() {
+        const orders = getCachedOrders().slice(0, 8);
+        document.getElementById("dashOrdersBody").innerHTML = orders.length
+          ? orders.map((o) => orderRow(o, true)).join("")
+          : '<tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--muted);">No orders yet</td></tr>';
+      }
+      function orderRow(o, short = false) {
+        const payIcons = {
+          card: "fa-credit-card",
+          transfer: "fa-university",
+          cod: "fa-money-bill-wave",
+        };
+        return `<tr>
+          <td><span style="font-weight:700;font-size:0.78rem;">#${String(o.id).slice(-8)}</span></td>
+          <td><div style="font-weight:600;font-size:0.83rem;">${o.customer.name}</div><div style="font-size:0.72rem;color:var(--muted);">${o.customer.email}</div></td>
+          <td><div style="font-size:0.78rem;max-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${o.customer.fullAddress}">${o.customer.city}, ${o.customer.state}</div></td>
+          ${!short ? `<td style="font-size:0.78rem;">${o.customer.phone}</td>` : ""}
+          <td><span style="font-size:0.78rem;color:var(--muted);">${o.items.length} item${o.items.length !== 1 ? "s" : ""}</span></td>
+          <td><span style="font-weight:700;">${fmt(o.total)}</span></td>
+          ${!short ? `<td><span style="font-size:0.73rem;"><i class="fas ${payIcons[o.payment] || "fa-circle"}" style="margin-right:3px;color:var(--muted);"></i>${o.payment}</span></td>` : ""}
+          <td style="font-size:0.73rem;color:var(--muted);">${fmtDate(o.date)}</td>
+          <td><span class="badge badge-${o.status}">${o.status}</span></td>
+          <td><button class="icon-btn" onclick="openOrderDetail('${o.id}')" title="View Details"><i class="fas fa-eye"></i></button></td>
+        </tr>`;
+      }
+
+      // ============ ORDERS TABLE ============
+      function renderOrdersTable() {
+        const search = (
+          document.getElementById("orderSearch")?.value || ""
+        ).toLowerCase();
+        const statusF =
+          document.getElementById("orderStatusFilter")?.value || "all";
+        const dateF =
+          document.getElementById("orderDateFilter")?.value || "all";
+        const now = new Date();
+        const startOfDay = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate(),
+        );
+        const startOfWeek = new Date(startOfDay);
+        startOfWeek.setDate(startOfDay.getDate() - startOfDay.getDay());
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        let orders = getCachedOrders().slice();
+        if (statusF !== "all")
+          orders = orders.filter((o) => o.status === statusF);
+        if (dateF === "today")
+          orders = orders.filter((o) => new Date(o.date) >= startOfDay);
+        else if (dateF === "week")
+          orders = orders.filter((o) => new Date(o.date) >= startOfWeek);
+        else if (dateF === "month")
+          orders = orders.filter((o) => new Date(o.date) >= startOfMonth);
+        if (search)
+          orders = orders.filter(
+            (o) =>
+              o.id.toLowerCase().includes(search) ||
+              o.customer.name.toLowerCase().includes(search) ||
+              o.customer.email.toLowerCase().includes(search) ||
+              o.customer.city.toLowerCase().includes(search),
+          );
+        document.getElementById("orderCount").textContent =
+          orders.length + " order" + (orders.length !== 1 ? "s" : "");
+        document.getElementById("ordersTableBody").innerHTML = orders.length
+          ? orders.map((o) => orderRow(o, false)).join("")
+          : '<tr><td colspan="10" style="text-align:center;padding:2rem;color:var(--muted);">No orders found</td></tr>';
+      }
+
+      // ============ ORDER DETAIL ============
+      function openOrderDetail(id) {
+        const orders = getCachedOrders();
+        const o = orders.find((x) => x.id == id);
+        if (!o) return;
+        document.getElementById("orderDetailTitle").textContent =
+          "Order #" + String(o.id).slice(-8);
+        const statuses = [
+          "pending",
+          "processing",
+          "shipped",
+          "completed",
+          "cancelled",
+        ];
+        const payIcons = {
+          card: "fa-credit-card",
+          transfer: "fa-university",
+          cod: "fa-money-bill-wave",
+        };
+        document.getElementById("orderDetailBody").innerHTML = `
+          <div class="order-detail-grid">
+            <div>
+              <div class="detail-section"><div class="detail-section-title">Customer Information</div><div class="detail-row"><span class="label">Name</span><span class="value">${o.customer.name}</span></div><div class="detail-row"><span class="label">Email</span><span class="value">${o.customer.email}</span></div><div class="detail-row"><span class="label">Phone</span><span class="value">${o.customer.phone}</span></div></div>
+              <div class="detail-section" style="margin-top:1rem;"><div class="detail-section-title">Delivery Address</div><div class="detail-row"><span class="label">Address</span><span class="value">${o.customer.address}</span></div><div class="detail-row"><span class="label">City</span><span class="value">${o.customer.city}</span></div><div class="detail-row"><span class="label">State</span><span class="value">${o.customer.state}</span></div></div>
+            </div>
+            <div>
+              <div class="detail-section"><div class="detail-section-title">Order Information</div><div class="detail-row"><span class="label">Order ID</span><span class="value">#${o.id}</span></div><div class="detail-row"><span class="label">Date</span><span class="value">${fmtDateTime(o.date)}</span></div><div class="detail-row"><span class="label">Payment</span><span class="value"><i class="fas ${payIcons[o.payment] || "fa-circle"}" style="margin-right:3px;"></i>${o.payment}</span></div><div class="detail-row"><span class="label">Subtotal</span><span class="value">${fmt(o.subtotal)}</span></div><div class="detail-row"><span class="label">VAT (7.5%)</span><span class="value">${fmt(o.vat)}</span></div><div class="detail-row" style="border-top:1px solid var(--border);padding-top:7px;margin-top:3px;"><span class="label" style="font-weight:700;">Total</span><span class="value" style="font-size:0.95rem;">${fmt(o.total)}</span></div></div>
+              <div class="detail-section" style="margin-top:1rem;"><div class="detail-section-title">Update Status</div><div style="display:flex;gap:6px;flex-wrap:wrap;">${statuses.map((s) => `<button class="btn btn-sm ${o.status === s ? "btn-primary" : "btn-ghost"}" onclick="updateOrderStatus('${o.id}','${s}','${o._docId || ""}')">${s}</button>`).join("")}</div></div>
+            </div>
+          </div>
+          <div class="order-items-list">
+            <div class="detail-section-title" style="margin-top:1.25rem;">Items Ordered (${o.items.length})</div>
+            ${o.items.map((item) => `<div class="order-item-row"><img class="order-item-img" src="${item.image}" alt="${item.name}"/><div style="flex:1;"><div class="order-item-name">${item.name}</div><div class="order-item-meta">${item.brand} · Size ${item.size} · ${item.colour} · Qty: ${item.quantity}</div></div><div class="order-item-price">${fmt(item.price * item.quantity)}</div></div>`).join("")}
+          </div>
+          ${(o.statusHistory || []).length ? `<div style="margin-top:1.25rem;"><div class="detail-section-title">Status History</div>${(o.statusHistory || []).map((h) => `<div class="timeline-item"><div class="timeline-dot ${h.status}"><i class="fas fa-check"></i></div><div><div class="timeline-text">${h.status}</div><div class="timeline-time">${fmtDateTime(h.timestamp)}</div></div></div>`).join("")}</div>` : ""}
+        `;
+        document.getElementById("orderDetailFoot").innerHTML =
+          `<button class="btn btn-ghost" onclick="closeOrderDetail()">Close</button>`;
+        document.getElementById("orderDetailModal").classList.add("open");
+      }
+      function closeOrderDetail() {
+        document.getElementById("orderDetailModal").classList.remove("open");
+      }
+      async function updateOrderStatus(id, status, docId) {
+        if (!docId) {
+          toast("Cannot update — Firestore document ID missing", "error");
+          return;
+        }
+        const orders = getCachedOrders();
+        const o = orders.find((x) => x.id == id);
+        if (!o) return;
+        const newHistory = [
+          ...(o.statusHistory || []),
+          { status, timestamp: new Date().toISOString() },
+        ];
+        const ok = await window.updateOrderStatusInFirebase(
+          docId,
+          status,
+          newHistory,
+        );
+        if (ok) {
+          o.status = status;
+          o.statusHistory = newHistory;
+          closeOrderDetail();
+          openOrderDetail(id);
+          renderOrdersTable();
+          updateBadges();
+          toast("Status updated to " + status, "success");
+        } else toast("Failed to update status. Check connection.", "error");
+      }
+
+      // ============ PRODUCTS TABLE ============
+      function renderProductsTable() {
+        const search = (
+          document.getElementById("productSearch")?.value || ""
+        ).toLowerCase();
+        const catF =
+          document.getElementById("productCategoryFilter")?.value || "all";
+        const stockF =
+          document.getElementById("productStockFilter")?.value || "all";
+        let products = getProducts();
+        if (catF !== "all")
+          products = products.filter((p) => p.category === catF);
+        if (stockF === "in") products = products.filter((p) => p.quantity > 5);
+        else if (stockF === "low")
+          products = products.filter((p) => p.quantity > 0 && p.quantity <= 5);
+        else if (stockF === "out")
+          products = products.filter((p) => p.quantity === 0);
+        if (search)
+          products = products.filter(
+            (p) =>
+              p.name.toLowerCase().includes(search) ||
+              p.brand.toLowerCase().includes(search),
+          );
+        document.getElementById("productsTableBody").innerHTML = products.length
+          ? products
+              .map(
+                (p) => `
+          <tr>
+            <td><div class="td-product"><img class="td-img" src="${p.image}" alt="${p.name}"/><div><div class="td-name">${p.name}</div><div class="td-sub">${p.brand}</div></div></div></td>
+            <td><span class="badge badge-cat">${p.category}</span></td>
+            <td><span style="font-weight:700;">${fmt(p.price)}</span></td>
+            <td><div class="stock-bar-wrap"><div class="stock-bar"><div class="stock-fill" style="width:${Math.min(100, (p.quantity / 50) * 100)}%;background:${p.quantity === 0 ? "#dc2626" : p.quantity <= 5 ? "#d97706" : "#16a34a"};"></div></div><span class="stock-num" style="color:${p.quantity === 0 ? "#dc2626" : p.quantity <= 5 ? "#d97706" : "var(--ink)"};">${p.quantity}</span></div></td>
+            <td style="font-size:0.83rem;">${p.sold || 0}</td>
+            <td><span class="badge ${p.quantity === 0 ? "badge-critical" : p.quantity <= 5 ? "badge-low" : "badge-active"}">${p.quantity === 0 ? "Out of Stock" : p.quantity <= 5 ? "Low Stock" : "Active"}</span></td>
+            <td><div style="display:flex;gap:5px;"><button class="icon-btn" onclick="openProductModal(${p.id})" title="Edit"><i class="fas fa-edit"></i></button><button class="icon-btn danger" onclick="deleteProduct(${p.id})" title="Delete"><i class="fas fa-trash"></i></button></div></td>
+          </tr>`,
+              )
+              .join("")
+          : '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--muted);">No products found</td></tr>';
+      }
+
+      // ============ PRODUCT MODAL ============
+      function openProductModal(id = null) {
+        const products = getProducts();
+        document.getElementById("prodId").value = id || "";
+        ["prodNameErr", "prodBrandErr", "prodPriceErr", "prodQtyErr"].forEach(
+          (e) => (document.getElementById(e).textContent = ""),
+        );
+        if (id) {
+          const p = products.find((x) => x.id === id);
+          if (!p) return;
+          document.getElementById("productModalTitle").textContent =
+            "Edit Product";
+          document.getElementById("prodName").value = p.name;
+          document.getElementById("prodBrand").value = p.brand;
+          document.getElementById("prodPrice").value = p.price;
+          document.getElementById("prodQty").value = p.quantity;
+          document.getElementById("prodCategory").value = p.category;
+          document.getElementById("prodImage").value = p.image || "";
+          document.getElementById("prodDesc").value = p.description || "";
+        } else {
+          document.getElementById("productModalTitle").textContent =
+            "Add Product";
+          [
+            "prodName",
+            "prodBrand",
+            "prodPrice",
+            "prodQty",
+            "prodImage",
+            "prodDesc",
+          ].forEach((id) => (document.getElementById(id).value = ""));
+          document.getElementById("prodCategory").value = "formal";
+        }
+        document.getElementById("productModal").classList.add("open");
+      }
+      function closeProductModal() {
+        document.getElementById("productModal").classList.remove("open");
+      }
+      function saveProduct() {
+        const id = document.getElementById("prodId").value;
+        const name = document.getElementById("prodName").value.trim();
+        const brand = document.getElementById("prodBrand").value.trim();
+        const price = parseFloat(document.getElementById("prodPrice").value);
+        const qty = parseInt(document.getElementById("prodQty").value);
+        let ok = true;
+        ["prodNameErr", "prodBrandErr", "prodPriceErr", "prodQtyErr"].forEach(
+          (e) => (document.getElementById(e).textContent = ""),
+        );
+        if (!name) {
+          document.getElementById("prodNameErr").textContent = "Required";
+          ok = false;
+        }
+        if (!brand) {
+          document.getElementById("prodBrandErr").textContent = "Required";
+          ok = false;
+        }
+        if (isNaN(price) || price < 0) {
+          document.getElementById("prodPriceErr").textContent =
+            "Valid price required";
+          ok = false;
+        }
+        if (isNaN(qty) || qty < 0) {
+          document.getElementById("prodQtyErr").textContent =
+            "Valid quantity required";
+          ok = false;
+        }
+        if (!ok) return;
+        const products = getProducts();
+        const pData = {
+          name,
+          brand,
+          price,
+          quantity: qty,
+          category: document.getElementById("prodCategory").value,
+          image:
+            document.getElementById("prodImage").value ||
+            "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+          description: document.getElementById("prodDesc").value.trim(),
+        };
+        if (id) {
+          const idx = products.findIndex((p) => p.id == id);
+          pData.id = parseInt(id);
+          pData.sold = products[idx]?.sold || 0;
+          products[idx] = pData;
+          toast("Product updated", "success");
+        } else {
+          pData.id = Date.now();
+          pData.sold = 0;
+          products.push(pData);
+          toast("Product added", "success");
+        }
+        DB.set("ps_products", products);
+        closeProductModal();
+        renderProductsTable();
+        updateBadges();
+      }
+      function deleteProduct(id) {
+        if (!confirm("Delete this product? This cannot be undone.")) return;
+        DB.set(
+          "ps_products",
+          getProducts().filter((p) => p.id !== id),
+        );
+        renderProductsTable();
+        updateBadges();
+        toast("Product deleted");
+      }
+
+      // ============ INVENTORY ============
+      function renderInventory() {
+        const products = getProducts();
+        const out = products.filter((p) => p.quantity === 0);
+        const low = products.filter((p) => p.quantity > 0 && p.quantity <= 5);
+        const ok = products.filter((p) => p.quantity > 5);
+        document.getElementById("inv-out").textContent = out.length;
+        document.getElementById("inv-low").textContent = low.length;
+        document.getElementById("inv-ok").textContent = ok.length;
+        const sorted = [...products].sort((a, b) => a.quantity - b.quantity);
+        document.getElementById("inventoryBody").innerHTML = sorted
+          .map((p) => {
+            const pct = Math.min(100, (p.quantity / 50) * 100);
+            const color =
+              p.quantity === 0
+                ? "#dc2626"
+                : p.quantity <= 5
+                  ? "#d97706"
+                  : "#16a34a";
+            return `<tr><td><div class="td-product"><img class="td-img" src="${p.image}" alt="${p.name}"/><div><div class="td-name">${p.name}</div><div class="td-sub">${p.brand}</div></div></div></td><td><span class="badge badge-cat">${p.category}</span></td><td><div class="stock-bar-wrap"><div class="stock-bar"><div class="stock-fill" style="width:${pct}%;background:${color};"></div></div></div></td><td><span style="font-weight:700;color:${color};">${p.quantity}</span></td><td><span class="badge ${p.quantity === 0 ? "badge-critical" : p.quantity <= 5 ? "badge-low" : "badge-active"}">${p.quantity === 0 ? "Out of Stock" : p.quantity <= 5 ? "Low Stock" : "In Stock"}</span></td><td><button class="btn btn-sm btn-ghost" onclick="quickRestock(${p.id})"><i class="fas fa-plus"></i> Restock</button></td></tr>`;
+          })
+          .join("");
+      }
+      function quickRestock(id) {
+        const qty = parseInt(prompt("Add how many units to stock?", "20"));
+        if (isNaN(qty) || qty <= 0) return;
+        const products = getProducts();
+        const p = products.find((x) => x.id === id);
+        if (p) {
+          p.quantity += qty;
+          DB.set("ps_products", products);
+          renderInventory();
+          updateBadges();
+          toast(`+${qty} units added to ${p.name}`, "success");
+        }
+      }
+
+      // ============ ANALYTICS ============
+      let analyticCharts = {};
+      function renderAnalytics() {
+        const rangeVal =
+          document.getElementById("analyticsRange")?.value || "30";
+        const range = rangeVal === "all" ? 99999 : parseInt(rangeVal);
+        const orders = getCachedOrders();
+        const products = getProducts();
+        const now = new Date();
+        const filtered =
+          rangeVal === "all"
+            ? orders
+            : orders.filter(
+                (o) => (now - new Date(o.date)) / 86400000 <= range,
+              );
+        const totalRev = filtered.reduce((s, o) => s + o.total, 0);
+        const totalOrds = filtered.length;
+        const aov = totalOrds ? totalRev / totalOrds : 0;
+        const completedRate = totalOrds
+          ? Math.round(
+              (filtered.filter((o) => o.status === "completed").length /
+                totalOrds) *
+                100,
+            )
+          : 0;
+        document.getElementById("analyticsStats").innerHTML = `
+          <div class="stat-card"><div class="stat-top"><div class="stat-label">Total Revenue</div><div class="stat-icon" style="background:#d4f5e2;color:#16a34a;"><i class="fas fa-coins"></i></div></div><div class="stat-value">${fmt(totalRev)}</div><div class="stat-change neutral">${totalOrds} orders</div></div>
+          <div class="stat-card"><div class="stat-top"><div class="stat-label">Avg. Order Value</div><div class="stat-icon" style="background:var(--gold-bg);color:var(--gold);"><i class="fas fa-chart-line"></i></div></div><div class="stat-value">${fmt(aov)}</div><div class="stat-change neutral">Per transaction</div></div>
+          <div class="stat-card"><div class="stat-top"><div class="stat-label">Total Orders</div><div class="stat-icon" style="background:var(--blue-bg);color:var(--blue);"><i class="fas fa-shopping-bag"></i></div></div><div class="stat-value">${totalOrds}</div><div class="stat-change neutral">In period</div></div>
+          <div class="stat-card"><div class="stat-top"><div class="stat-label">Completion Rate</div><div class="stat-icon" style="background:#fee2e2;color:#dc2626;"><i class="fas fa-percent"></i></div></div><div class="stat-value">${completedRate}%</div><div class="stat-change ${completedRate >= 70 ? "up" : "down"}">Orders completed</div></div>
+        `;
+        const step = range <= 30 ? 1 : range <= 90 ? 7 : 30;
+        const fmt2 = (d) =>
+          range <= 30
+            ? d.toLocaleDateString("en-NG", { day: "numeric", month: "short" })
+            : range <= 90
+              ? `W${getWeek(d)}`
+              : d.toLocaleDateString("en-NG", { month: "short" });
+        const buckets = {},
+          ordBuckets = {};
+        for (let i = Math.min(range, 365); i >= 0; i -= step) {
+          const d = new Date(now);
+          d.setDate(d.getDate() - i);
+          const k = fmt2(d);
+          buckets[k] = 0;
+          ordBuckets[k] = 0;
+        }
+        filtered.forEach((o) => {
+          const d = new Date(o.date),
+            diff = Math.floor((now - d) / 86400000);
+          if (diff > range) return;
+          const k = fmt2(d);
+          if (k in buckets) {
+            buckets[k] += o.total;
+            ordBuckets[k]++;
+          }
+        });
+        const dLabels = Object.keys(buckets),
+          dData = Object.values(buckets),
+          oData = Object.values(ordBuckets);
+        drawChart(
+          "analyticsDailyChart",
+          "bar",
+          dLabels,
+          [
+            {
+              label: "Revenue (₦)",
+              data: dData,
+              backgroundColor: "rgba(201,168,76,0.7)",
+              borderColor: "#c9a84c",
+              borderWidth: 2,
+              borderRadius: 5,
+            },
+          ],
+          {
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: { callback: (v) => "₦" + Number(v).toLocaleString() },
+              },
+              x: { grid: { display: false } },
+            },
+          },
+        );
+        document.getElementById("analyticsDailySubtitle").textContent =
+          `Period: last ${rangeVal === "all" ? "all time" : rangeVal + " days"}`;
+        drawChart(
+          "analyticsOrderChart",
+          "line",
+          dLabels,
+          [
+            {
+              label: "Orders",
+              data: oData,
+              borderColor: "#3b82f6",
+              backgroundColor: "rgba(59,130,246,0.1)",
+              borderWidth: 2,
+              fill: true,
+              tension: 0.4,
+            },
+          ],
+          {
+            scales: {
+              y: { beginAtZero: true, ticks: { stepSize: 1 } },
+              x: { grid: { display: false } },
+            },
+          },
+        );
+        const cats = { formal: 0, casual: 0, sports: 0, boots: 0 };
+        filtered.forEach((o) =>
+          o.items.forEach((item) => {
+            const p = products.find((x) => x.id === item.id);
+            if (p)
+              cats[p.category] =
+                (cats[p.category] || 0) + item.price * item.quantity;
+          }),
+        );
+        const cLabels = Object.keys(cats).filter((k) => cats[k] > 0);
+        drawChart(
+          "analyticsCatChart",
+          "doughnut",
+          cLabels,
+          [
+            {
+              data: cLabels.map((k) => cats[k]),
+              backgroundColor: ["#c9a84c", "#3b82f6", "#16a34a", "#dc2626"],
+              borderWidth: 0,
+            },
+          ],
+          {
+            cutout: "65%",
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: { font: { size: 10 }, padding: 10 },
+              },
+            },
+          },
+        );
+        const pays = { card: 0, transfer: 0, cod: 0 };
+        filtered.forEach((o) => {
+          if (o.payment in pays) pays[o.payment]++;
+        });
+        drawChart(
+          "analyticsPayChart",
+          "pie",
+          ["Card", "Transfer", "Cash on Delivery"],
+          [
+            {
+              data: [pays.card, pays.transfer, pays.cod],
+              backgroundColor: ["#3b82f6", "#16a34a", "#f59e0b"],
+              borderWidth: 0,
+            },
+          ],
+          {
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: { font: { size: 10 }, padding: 10 },
+              },
+            },
+          },
+        );
+        const prodSales = {};
+        filtered.forEach((o) =>
+          o.items.forEach((item) => {
+            prodSales[item.name] = (prodSales[item.name] || 0) + item.quantity;
+          }),
+        );
+        const sortedPS = Object.entries(prodSales)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 8);
+        drawChart(
+          "analyticsTopChart",
+          "bar",
+          sortedPS.map((x) => x[0]),
+          [
+            {
+              label: "Units Sold",
+              data: sortedPS.map((x) => x[1]),
+              backgroundColor: "rgba(26,58,92,0.75)",
+              borderColor: "var(--accent)",
+              borderWidth: 2,
+              borderRadius: 5,
+            },
+          ],
+          {
+            indexAxis: "y",
+            scales: {
+              x: { beginAtZero: true },
+              y: { grid: { display: false } },
+            },
+            plugins: { legend: { display: false } },
+          },
+        );
+      }
+      function getWeek(d) {
+        const s = new Date(d.getFullYear(), 0, 1);
+        return Math.ceil(((d - s) / 86400000 + s.getDay() + 1) / 7);
+      }
+      function drawChart(canvasId, type, labels, datasets, extraOpts = {}) {
+        if (analyticCharts[canvasId]) analyticCharts[canvasId].destroy();
+        const ctx = document.getElementById(canvasId).getContext("2d");
+        analyticCharts[canvasId] = new Chart(ctx, {
+          type,
+          data: { labels, datasets },
+          options: {
+            responsive: true,
+            ...extraOpts,
+            plugins: {
+              legend: {
+                display:
+                  extraOpts.plugins?.legend?.display !== undefined
+                    ? extraOpts.plugins.legend.display
+                    : true,
+                ...(extraOpts.plugins?.legend || {}),
+              },
+            },
+            cutout: extraOpts.cutout || undefined,
+            indexAxis: extraOpts.indexAxis || undefined,
+          },
+        });
+      }
+
+      // ============ CUSTOMERS ============
+      function renderCustomers() {
+        const search = (
+          document.getElementById("customerSearch")?.value || ""
+        ).toLowerCase();
+        const users = getUsers().filter(
+          (u) =>
+            !search ||
+            u.name.toLowerCase().includes(search) ||
+            u.email.toLowerCase().includes(search),
+        );
+        const orders = getCachedOrders();
+        document.getElementById("customersBody").innerHTML = users.length
+          ? users
+              .map((u) => {
+                const uOrders = orders.filter(
+                  (o) => o.userEmail === u.email.toLowerCase(),
+                );
+                const spent = uOrders.reduce((s, o) => s + o.total, 0);
+                return `<tr><td><div style="display:flex;align-items:center;gap:9px;"><div style="width:32px;height:32px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.83rem;flex-shrink:0;">${u.name[0].toUpperCase()}</div><div><div style="font-weight:600;font-size:0.83rem;">${u.name}</div></div></div></td><td style="font-size:0.83rem;">${u.email}</td><td style="font-size:0.83rem;">${u.phone || "—"}</td><td><span style="font-weight:700;">${uOrders.length}</span></td><td><span style="font-weight:700;">${fmt(spent)}</span></td><td style="font-size:0.78rem;color:var(--muted);">${fmtDate(u.createdAt)}</td></tr>`;
+              })
+              .join("")
+          : '<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">No customers yet</td></tr>';
+      }
+
+      // ============ SETTINGS ============
+      function loadSettings() {
+        const creds = getAdminCreds();
+        document.getElementById("settingsUser").value = creds.username;
+        ["settingsCurPass", "settingsNewPass", "settingsConfPass"].forEach(
+          (id) => (document.getElementById(id).value = ""),
+        );
+        ["settingsCurPassErr", "settingsPassErr"].forEach(
+          (id) => (document.getElementById(id).textContent = ""),
+        );
+      }
+      function saveSettings() {
+        const creds = getAdminCreds();
+        const curPass = document.getElementById("settingsCurPass").value;
+        const newPass = document.getElementById("settingsNewPass").value;
+        const confPass = document.getElementById("settingsConfPass").value;
+        const newUser = document.getElementById("settingsUser").value.trim();
+        ["settingsCurPassErr", "settingsPassErr"].forEach(
+          (id) => (document.getElementById(id).textContent = ""),
+        );
+        if (curPass !== creds.password) {
+          document.getElementById("settingsCurPassErr").textContent =
+            "Current password is incorrect";
+          return;
+        }
+        if (newPass && newPass.length < 6) {
+          document.getElementById("settingsPassErr").textContent =
+            "Min. 6 characters";
+          return;
+        }
+        if (newPass && newPass !== confPass) {
+          document.getElementById("settingsPassErr").textContent =
+            "Passwords do not match";
+          return;
+        }
+        DB.set("ps_admin", {
+          username: newUser || creds.username,
+          password: newPass || creds.password,
+        });
+        const sess = DB.get("ps_adminSession", {});
+        sess.username = newUser || creds.username;
+        DB.set("ps_adminSession", sess);
+        document.getElementById("sidebarName").textContent =
+          newUser || creds.username;
+        document.getElementById("sidebarAvatar").textContent = (newUser ||
+          creds.username)[0].toUpperCase();
+        toast("Credentials updated successfully", "success");
+      }
+      function resetProducts() {
+        if (
+          !confirm("Reset products to defaults? This will overwrite all edits.")
+        )
+          return;
+        DB.set("ps_products", []);
+        toast("Products reset to defaults");
+      }
+
+      // ============ TOAST ============
+      function toast(msg, type = "info") {
+        const wrap = document.getElementById("toastWrap");
+        const el = document.createElement("div");
+        el.className = `toast ${type}`;
+        const icon =
+          type === "success"
+            ? "fa-check-circle"
+            : type === "error"
+              ? "fa-exclamation-circle"
+              : "fa-info-circle";
+        const colour =
+          type === "success"
+            ? "#22c55e"
+            : type === "error"
+              ? "var(--accent2)"
+              : "var(--gold)";
+        el.innerHTML = `<i class="fas ${icon}" style="color:${colour};flex-shrink:0;"></i><span>${msg}</span>`;
+        wrap.appendChild(el);
+        setTimeout(() => {
+          el.classList.add("toast-out");
+          setTimeout(() => el.remove(), 300);
+        }, 3500);
+      }
+    </script>
+  </body>
+</html>
