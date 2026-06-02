@@ -52,7 +52,6 @@
         overflow-x: hidden;
       }
 
-      /* ===== LOGIN ===== */
       .login-page {
         min-height: 100vh;
         display: flex;
@@ -168,13 +167,10 @@
         line-height: 1.5;
       }
 
-      /* ===== LAYOUT ===== */
       .admin-layout {
         display: flex;
         min-height: 100vh;
       }
-
-      /* ===== SIDEBAR ===== */
       .sidebar {
         width: var(--sidebar-w);
         background: var(--sidebar);
@@ -333,7 +329,6 @@
         color: rgba(255, 255, 255, 0.4);
       }
 
-      /* ===== MAIN CONTENT ===== */
       .main-content {
         margin-left: var(--sidebar-w);
         flex: 1;
@@ -432,7 +427,6 @@
         margin-bottom: 1.5rem;
       }
 
-      /* ===== STATS GRID ===== */
       .stats-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -496,7 +490,6 @@
         color: var(--muted);
       }
 
-      /* ===== CHARTS ===== */
       .charts-grid {
         display: grid;
         grid-template-columns: 2fr 1fr;
@@ -538,7 +531,6 @@
         color: var(--ink);
       }
 
-      /* ===== TABLE ===== */
       .table-card {
         background: var(--card);
         border-radius: 14px;
@@ -640,7 +632,6 @@
         color: var(--muted);
       }
 
-      /* ===== BADGES ===== */
       .badge {
         display: inline-flex;
         align-items: center;
@@ -690,7 +681,6 @@
         color: var(--muted);
       }
 
-      /* ===== STOCK BAR ===== */
       .stock-bar-wrap {
         display: flex;
         align-items: center;
@@ -715,7 +705,6 @@
         text-align: right;
       }
 
-      /* ===== BUTTONS ===== */
       .btn {
         display: inline-flex;
         align-items: center;
@@ -780,7 +769,6 @@
         background: #fee2e2;
       }
 
-      /* ===== MODALS ===== */
       .modal-overlay {
         position: fixed;
         inset: 0;
@@ -869,7 +857,6 @@
         cursor: pointer;
       }
 
-      /* ===== ORDER DETAIL ===== */
       .order-detail-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -993,7 +980,6 @@
         color: var(--muted);
       }
 
-      /* ===== INVENTORY ===== */
       .inv-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -1020,7 +1006,6 @@
         flex-shrink: 0;
       }
 
-      /* ===== ANALYTICS ===== */
       .analytics-row {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -1028,7 +1013,6 @@
         margin-bottom: 1rem;
       }
 
-      /* ===== LOADING ===== */
       .loading-row td {
         text-align: center;
         padding: 2.5rem;
@@ -1049,7 +1033,6 @@
         }
       }
 
-      /* ===== TOAST ===== */
       .toast-wrap {
         position: fixed;
         bottom: 1.5rem;
@@ -1100,7 +1083,33 @@
         }
       }
 
-      /* ===== RESPONSIVE ===== */
+      .live-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.68rem;
+        color: var(--green);
+        font-weight: 600;
+      }
+      .live-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--green);
+        animation: pulse 1.8s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.5;
+          transform: scale(0.85);
+        }
+      }
+
       @media (max-width: 1200px) {
         .stats-grid {
           grid-template-columns: repeat(2, 1fr);
@@ -1170,9 +1179,6 @@
           border-radius: 16px 16px 0 0;
           max-height: 93vh;
         }
-        .modal-overlay.open .modal-box {
-          transform: scale(1) translateY(0);
-        }
         .store-link span {
           display: none;
         }
@@ -1191,7 +1197,7 @@
     </style>
   </head>
   <body>
-    <!-- ===== LOGIN ===== -->
+    <!-- LOGIN -->
     <div id="loginPage">
       <div class="login-page">
         <div class="login-card">
@@ -1207,8 +1213,8 @@
             Sign in with your administrator credentials to continue.
           </p>
           <div class="form-group">
-            <label class="form-label">Username</label
-            ><input
+            <label class="form-label">Username</label>
+            <input
               class="form-input"
               type="text"
               id="adminUser"
@@ -1217,8 +1223,8 @@
             <p class="form-error" id="loginUserErr"></p>
           </div>
           <div class="form-group">
-            <label class="form-label">Password</label
-            ><input
+            <label class="form-label">Password</label>
+            <input
               class="form-input"
               type="password"
               id="adminPass"
@@ -1244,17 +1250,15 @@
       </div>
     </div>
 
-    <!-- ===== ADMIN APP ===== -->
+    <!-- ADMIN APP -->
     <div id="adminApp" style="display: none">
       <div class="admin-layout">
-        <!-- SIDEBAR OVERLAY (mobile) -->
         <div
           class="sidebar-overlay"
           id="sidebarOverlay"
           onclick="closeSidebar()"
         ></div>
 
-        <!-- SIDEBAR -->
         <aside class="sidebar" id="adminSidebar">
           <div class="sidebar-head">
             <div class="sidebar-logo">
@@ -1347,7 +1351,6 @@
           </div>
         </aside>
 
-        <!-- MAIN -->
         <div class="main-content">
           <div class="topbar">
             <div class="topbar-left">
@@ -1357,6 +1360,12 @@
               <span class="topbar-title" id="topbarTitle">Dashboard</span>
             </div>
             <div class="topbar-right">
+              <span
+                class="live-indicator"
+                id="liveIndicator"
+                style="display: none"
+                ><span class="live-dot"></span>Live</span
+              >
               <span class="topbar-time" id="topbarTime"></span>
               <a href="index.html" target="_blank" class="store-link"
                 ><i class="fas fa-external-link-alt"></i
@@ -1405,11 +1414,8 @@
               </div>
               <div class="table-card">
                 <div class="table-head">
-                  <span class="table-title">Recent Orders</span
-                  ><button
-                    class="btn btn-ghost btn-sm"
-                    onclick="goTo('orders')"
-                  >
+                  <span class="table-title">Recent Orders</span>
+                  <button class="btn btn-ghost btn-sm" onclick="goTo('orders')">
                     <i class="fas fa-arrow-right"></i> View All
                   </button>
                 </div>
@@ -1483,15 +1489,12 @@
                   <option value="week">This Week</option>
                   <option value="month">This Month</option>
                 </select>
-                <button
-                  class="btn btn-ghost btn-sm"
-                  onclick="refreshOrders()"
-                  style="margin-left: auto"
-                >
-                  <i class="fas fa-sync-alt"></i> Refresh
-                </button>
                 <span
-                  style="font-size: 0.78rem; color: var(--muted)"
+                  style="
+                    font-size: 0.78rem;
+                    color: var(--muted);
+                    margin-left: auto;
+                  "
                   id="orderCount"
                   >0 orders</span
                 >
@@ -2061,12 +2064,13 @@
       import {
         getFirestore,
         collection,
-        getDocs,
         doc,
         updateDoc,
         query,
         orderBy,
+        onSnapshot,
       } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
       const firebaseConfig = {
         apiKey: "AIzaSyDVAPiXAWtUJWUdZsMLoXLupw8wDkHDed4",
         authDomain: "premiumshoestoree.firebaseapp.com",
@@ -2076,18 +2080,31 @@
         appId: "1:153382305968:web:f39f2a3b9420258620fb75",
         measurementId: "G-XP4N5G4P0P",
       };
+
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
-      window.getAllOrdersFromFirebase = async function () {
-        try {
-          const q = query(collection(db, "orders"), orderBy("date", "desc"));
-          const snap = await getDocs(q);
-          return snap.docs.map((d) => ({ ...d.data(), _docId: d.id }));
-        } catch (e) {
-          console.error("Firebase getAllOrders error:", e);
-          return [];
-        }
+
+      let _unsubscribeOrders = null;
+
+      window.subscribeToOrders = function (onUpdate) {
+        if (_unsubscribeOrders) _unsubscribeOrders();
+        const q = query(collection(db, "orders"), orderBy("date", "desc"));
+        _unsubscribeOrders = onSnapshot(
+          q,
+          (snap) => {
+            const orders = snap.docs.map((d) => ({
+              ...d.data(),
+              _docId: d.id,
+            }));
+            onUpdate(orders);
+          },
+          (err) => {
+            console.error("onSnapshot error:", err);
+          },
+        );
+        return _unsubscribeOrders;
       };
+
       window.updateOrderStatusInFirebase = async function (
         docId,
         status,
@@ -2101,6 +2118,7 @@
           return false;
         }
       };
+
       window._firebaseAdminReady = true;
       document.dispatchEvent(new Event("firebaseAdminReady"));
     </script>
@@ -2148,22 +2166,67 @@
         });
       }
 
+      // ============ ORDERS STATE (onSnapshot) ============
       let _cachedOrders = [];
-      async function loadAllOrders() {
-        if (window.getAllOrdersFromFirebase) {
-          _cachedOrders = await window.getAllOrdersFromFirebase();
-        } else {
-          await new Promise((r) => {
-            document.addEventListener("firebaseAdminReady", r, { once: true });
-            setTimeout(r, 5000);
-          });
-          if (window.getAllOrdersFromFirebase)
-            _cachedOrders = await window.getAllOrdersFromFirebase();
-        }
-        return _cachedOrders;
-      }
+      let _ordersLoaded = false;
+
       function getCachedOrders() {
         return _cachedOrders;
+      }
+
+      function startOrdersListener() {
+        const subscribe = () => {
+          window.subscribeToOrders((orders) => {
+            _cachedOrders = orders;
+            _ordersLoaded = true;
+
+            // Show live indicator
+            const li = document.getElementById("liveIndicator");
+            if (li) li.style.display = "";
+
+            // Re-render the active page
+            const active = document.querySelector(".section.active");
+            if (!active) return;
+            const page = active.id.replace("page-", "");
+
+            if (page === "dashboard") {
+              renderDashboardStats();
+              renderRevenueChart();
+              renderStatusChart();
+              renderDashOrders();
+            } else if (page === "orders") {
+              renderOrdersTable();
+            } else if (page === "analytics") {
+              renderAnalytics();
+            }
+            updateBadges();
+          });
+        };
+
+        if (window._firebaseAdminReady) {
+          subscribe();
+        } else {
+          document.addEventListener("firebaseAdminReady", subscribe, {
+            once: true,
+          });
+        }
+      }
+
+      // Kept for any legacy callers — resolves once the first snapshot arrives
+      async function loadAllOrders() {
+        if (_ordersLoaded) return _cachedOrders;
+        return new Promise((resolve) => {
+          const iv = setInterval(() => {
+            if (_ordersLoaded) {
+              clearInterval(iv);
+              resolve(_cachedOrders);
+            }
+          }, 50);
+          setTimeout(() => {
+            clearInterval(iv);
+            resolve(_cachedOrders);
+          }, 6000);
+        });
       }
 
       // ============ SIDEBAR ============
@@ -2208,6 +2271,7 @@
         });
         showApp();
       }
+
       function doAdminLogout() {
         DB.set("ps_adminSession", null);
         document.getElementById("adminApp").style.display = "none";
@@ -2216,6 +2280,7 @@
         document.getElementById("adminPass").value = "";
         closeSidebar();
       }
+
       function showApp() {
         document.getElementById("loginPage").style.display = "none";
         document.getElementById("adminApp").style.display = "";
@@ -2226,8 +2291,10 @@
           sess.username || "Admin";
         updateTopbarTime();
         setInterval(updateTopbarTime, 60000);
+        startOrdersListener();
         loadDashboard();
       }
+
       function updateTopbarTime() {
         const now = new Date();
         document.getElementById("topbarTime").textContent =
@@ -2247,6 +2314,7 @@
         const el = document.getElementById("dashGreeting");
         if (el) el.textContent = greet + ". Here's your store overview.";
       }
+
       window.addEventListener("DOMContentLoaded", () => {
         const sess = DB.get("ps_adminSession", null);
         if (sess && sess.loggedIn) showApp();
@@ -2280,24 +2348,14 @@
             customers: "Customers",
             settings: "Settings",
           }[page] || page;
-        // Close sidebar on mobile navigation
         if (window.innerWidth <= 900) closeSidebar();
         if (page === "dashboard") loadDashboard();
-        if (page === "orders") loadAllOrders().then(() => renderOrdersTable());
+        if (page === "orders") renderOrdersTable();
         if (page === "products") renderProductsTable();
         if (page === "inventory") renderInventory();
-        if (page === "analytics") loadAllOrders().then(() => renderAnalytics());
+        if (page === "analytics") renderAnalytics();
         if (page === "customers") renderCustomers();
         if (page === "settings") loadSettings();
-      }
-      function refreshOrders() {
-        document.getElementById("ordersTableBody").innerHTML =
-          '<tr class="loading-row"><td colspan="10"><span class="spinner-sm"></span> Refreshing…</td></tr>';
-        loadAllOrders().then(() => {
-          renderOrdersTable();
-          toast("Orders refreshed", "success");
-          updateBadges();
-        });
       }
 
       // ============ BADGES ============
@@ -2315,10 +2373,7 @@
       }
 
       // ============ DASHBOARD ============
-      async function loadDashboard() {
-        document.getElementById("dashOrdersBody").innerHTML =
-          '<tr class="loading-row"><td colspan="8"><span class="spinner-sm"></span> Loading orders…</td></tr>';
-        await loadAllOrders();
+      function renderDashboardStats() {
         const orders = getCachedOrders();
         const now = new Date();
         const todayStr = now.toDateString();
@@ -2341,6 +2396,13 @@
           <div class="stat-card"><div class="stat-top"><div><div class="stat-label">Total Revenue</div></div><div class="stat-icon" style="background:var(--gold-bg);color:var(--gold);"><i class="fas fa-coins"></i></div></div><div class="stat-value">${fmt(totalRevenue)}</div><div class="stat-change neutral"><i class="fas fa-shopping-bag"></i>${orders.length} total</div></div>
           <div class="stat-card"><div class="stat-top"><div><div class="stat-label">Pending Orders</div></div><div class="stat-icon" style="background:#fee2e2;color:#dc2626;"><i class="fas fa-clock"></i></div></div><div class="stat-value">${pendingCount}</div><div class="stat-change ${pendingCount > 0 ? "down" : "up"}"><i class="fas fa-${pendingCount > 0 ? "exclamation-triangle" : "check"}"></i>${pendingCount > 0 ? "Needs attention" : "All clear"}</div></div>
         `;
+      }
+
+      async function loadDashboard() {
+        document.getElementById("dashOrdersBody").innerHTML =
+          '<tr class="loading-row"><td colspan="8"><span class="spinner-sm"></span> Loading orders…</td></tr>';
+        await loadAllOrders();
+        renderDashboardStats();
         renderRevenueChart();
         renderStatusChart();
         renderDashOrders();
@@ -2407,6 +2469,7 @@
           },
         });
       }
+
       function renderStatusChart() {
         const orders = getCachedOrders();
         const counts = {
@@ -2455,12 +2518,14 @@
           },
         });
       }
+
       function renderDashOrders() {
         const orders = getCachedOrders().slice(0, 8);
         document.getElementById("dashOrdersBody").innerHTML = orders.length
           ? orders.map((o) => orderRow(o, true)).join("")
           : '<tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--muted);">No orders yet</td></tr>';
       }
+
       function orderRow(o, short = false) {
         const payIcons = {
           card: "fa-credit-card",
@@ -2563,9 +2628,11 @@
           `<button class="btn btn-ghost" onclick="closeOrderDetail()">Close</button>`;
         document.getElementById("orderDetailModal").classList.add("open");
       }
+
       function closeOrderDetail() {
         document.getElementById("orderDetailModal").classList.remove("open");
       }
+
       async function updateOrderStatus(id, status, docId) {
         if (!docId) {
           toast("Cannot update — Firestore document ID missing", "error");
@@ -2584,14 +2651,14 @@
           newHistory,
         );
         if (ok) {
-          o.status = status;
-          o.statusHistory = newHistory;
+          // onSnapshot will update _cachedOrders automatically; just close & reopen for immediate UI refresh
           closeOrderDetail();
-          openOrderDetail(id);
-          renderOrdersTable();
-          updateBadges();
           toast("Status updated to " + status, "success");
-        } else toast("Failed to update status. Check connection.", "error");
+          // Reopen after a brief moment so the snapshot has time to arrive
+          setTimeout(() => openOrderDetail(id), 400);
+        } else {
+          toast("Failed to update status. Check connection.", "error");
+        }
       }
 
       // ============ PRODUCTS TABLE ============
@@ -2621,15 +2688,15 @@
           ? products
               .map(
                 (p) => `
-          <tr>
-            <td><div class="td-product"><img class="td-img" src="${p.image}" alt="${p.name}"/><div><div class="td-name">${p.name}</div><div class="td-sub">${p.brand}</div></div></div></td>
-            <td><span class="badge badge-cat">${p.category}</span></td>
-            <td><span style="font-weight:700;">${fmt(p.price)}</span></td>
-            <td><div class="stock-bar-wrap"><div class="stock-bar"><div class="stock-fill" style="width:${Math.min(100, (p.quantity / 50) * 100)}%;background:${p.quantity === 0 ? "#dc2626" : p.quantity <= 5 ? "#d97706" : "#16a34a"};"></div></div><span class="stock-num" style="color:${p.quantity === 0 ? "#dc2626" : p.quantity <= 5 ? "#d97706" : "var(--ink)"};">${p.quantity}</span></div></td>
-            <td style="font-size:0.83rem;">${p.sold || 0}</td>
-            <td><span class="badge ${p.quantity === 0 ? "badge-critical" : p.quantity <= 5 ? "badge-low" : "badge-active"}">${p.quantity === 0 ? "Out of Stock" : p.quantity <= 5 ? "Low Stock" : "Active"}</span></td>
-            <td><div style="display:flex;gap:5px;"><button class="icon-btn" onclick="openProductModal(${p.id})" title="Edit"><i class="fas fa-edit"></i></button><button class="icon-btn danger" onclick="deleteProduct(${p.id})" title="Delete"><i class="fas fa-trash"></i></button></div></td>
-          </tr>`,
+            <tr>
+              <td><div class="td-product"><img class="td-img" src="${p.image}" alt="${p.name}"/><div><div class="td-name">${p.name}</div><div class="td-sub">${p.brand}</div></div></div></td>
+              <td><span class="badge badge-cat">${p.category}</span></td>
+              <td><span style="font-weight:700;">${fmt(p.price)}</span></td>
+              <td><div class="stock-bar-wrap"><div class="stock-bar"><div class="stock-fill" style="width:${Math.min(100, (p.quantity / 50) * 100)}%;background:${p.quantity === 0 ? "#dc2626" : p.quantity <= 5 ? "#d97706" : "#16a34a"};"></div></div><span class="stock-num" style="color:${p.quantity === 0 ? "#dc2626" : p.quantity <= 5 ? "#d97706" : "var(--ink)"};">${p.quantity}</span></div></td>
+              <td style="font-size:0.83rem;">${p.sold || 0}</td>
+              <td><span class="badge ${p.quantity === 0 ? "badge-critical" : p.quantity <= 5 ? "badge-low" : "badge-active"}">${p.quantity === 0 ? "Out of Stock" : p.quantity <= 5 ? "Low Stock" : "Active"}</span></td>
+              <td><div style="display:flex;gap:5px;"><button class="icon-btn" onclick="openProductModal(${p.id})" title="Edit"><i class="fas fa-edit"></i></button><button class="icon-btn danger" onclick="deleteProduct(${p.id})" title="Delete"><i class="fas fa-trash"></i></button></div></td>
+            </tr>`,
               )
               .join("")
           : '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--muted);">No products found</td></tr>';
@@ -2669,9 +2736,11 @@
         }
         document.getElementById("productModal").classList.add("open");
       }
+
       function closeProductModal() {
         document.getElementById("productModal").classList.remove("open");
       }
+
       function saveProduct() {
         const id = document.getElementById("prodId").value;
         const name = document.getElementById("prodName").value.trim();
@@ -2730,6 +2799,7 @@
         renderProductsTable();
         updateBadges();
       }
+
       function deleteProduct(id) {
         if (!confirm("Delete this product? This cannot be undone.")) return;
         DB.set(
@@ -2764,6 +2834,7 @@
           })
           .join("");
       }
+
       function quickRestock(id) {
         const qty = parseInt(prompt("Add how many units to stock?", "20"));
         if (isNaN(qty) || qty <= 0) return;
@@ -2974,10 +3045,12 @@
           },
         );
       }
+
       function getWeek(d) {
         const s = new Date(d.getFullYear(), 0, 1);
         return Math.ceil(((d - s) / 86400000 + s.getDay() + 1) / 7);
       }
+
       function drawChart(canvasId, type, labels, datasets, extraOpts = {}) {
         if (analyticCharts[canvasId]) analyticCharts[canvasId].destroy();
         const ctx = document.getElementById(canvasId).getContext("2d");
@@ -3038,6 +3111,7 @@
           (id) => (document.getElementById(id).textContent = ""),
         );
       }
+
       function saveSettings() {
         const creds = getAdminCreds();
         const curPass = document.getElementById("settingsCurPass").value;
@@ -3075,6 +3149,7 @@
           creds.username)[0].toUpperCase();
         toast("Credentials updated successfully", "success");
       }
+
       function resetProducts() {
         if (
           !confirm("Reset products to defaults? This will overwrite all edits.")

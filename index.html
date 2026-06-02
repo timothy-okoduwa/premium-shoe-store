@@ -45,7 +45,6 @@
         font-family: "Cormorant Garamond", serif;
       }
 
-      /* ===== NAV ===== */
       nav {
         background: var(--ink);
         position: sticky;
@@ -215,8 +214,6 @@
         height: 1px;
         background: var(--border);
       }
-
-      /* Mobile search toggle */
       .mob-search-btn {
         display: none;
       }
@@ -256,7 +253,6 @@
         display: block;
       }
 
-      /* ===== HERO ===== */
       .hero {
         background: var(--ink);
         color: white;
@@ -357,7 +353,6 @@
         margin-top: 1px;
       }
 
-      /* ===== FILTER BAR ===== */
       .filter-bar {
         background: white;
         border-bottom: 1px solid var(--border);
@@ -419,7 +414,6 @@
         flex-shrink: 0;
       }
 
-      /* ===== PRODUCTS ===== */
       .products-section {
         max-width: 1280px;
         margin: auto;
@@ -563,7 +557,6 @@
         color: var(--ink);
       }
 
-      /* ===== PRODUCT MODAL ===== */
       .modal-overlay {
         position: fixed;
         inset: 0;
@@ -782,7 +775,6 @@
         background: #d4b060;
       }
 
-      /* ===== CART SIDEBAR ===== */
       .cart-backdrop {
         position: fixed;
         inset: 0;
@@ -991,7 +983,6 @@
         cursor: not-allowed;
       }
 
-      /* ===== AUTH MODAL ===== */
       .auth-modal-box {
         background: white;
         border-radius: 18px;
@@ -1061,7 +1052,6 @@
         text-decoration: underline;
       }
 
-      /* ===== CHECKOUT MODAL ===== */
       .checkout-modal-box {
         background: white;
         border-radius: 18px;
@@ -1239,7 +1229,6 @@
         font-size: 1rem;
       }
 
-      /* ===== ORDERS MODAL ===== */
       .orders-modal-box {
         background: white;
         border-radius: 18px;
@@ -1378,7 +1367,6 @@
         animation: spin 0.8s ease-in-out infinite;
       }
 
-      /* ===== FEATURES ===== */
       .features {
         background: white;
         padding: 3rem 1rem;
@@ -1416,7 +1404,6 @@
         color: var(--muted);
       }
 
-      /* ===== FOOTER ===== */
       footer {
         background: var(--ink);
         color: white;
@@ -1490,7 +1477,6 @@
         color: var(--gold);
       }
 
-      /* ===== TOAST ===== */
       .toast-wrap {
         position: fixed;
         bottom: 1.5rem;
@@ -1541,7 +1527,6 @@
         }
       }
 
-      /* ===== RESPONSIVE ===== */
       @media (max-width: 900px) {
         .footer-grid {
           grid-template-columns: 1fr 1fr;
@@ -1682,7 +1667,7 @@
     </style>
   </head>
   <body>
-    <!-- ====== NAVBAR ====== -->
+    <!-- NAVBAR -->
     <nav>
       <div class="nav-inner">
         <a href="#" class="logo">
@@ -1730,7 +1715,6 @@
           </div>
         </div>
       </div>
-      <!-- Mobile search bar -->
       <div class="mob-search-bar" id="mobSearchBar">
         <div class="mob-search-wrap">
           <i class="fas fa-search"></i>
@@ -1744,7 +1728,7 @@
       </div>
     </nav>
 
-    <!-- ====== HERO ====== -->
+    <!-- HERO -->
     <section class="hero">
       <div class="hero-inner">
         <div>
@@ -1791,7 +1775,7 @@
       </div>
     </section>
 
-    <!-- ====== FILTER BAR ====== -->
+    <!-- FILTER BAR -->
     <div class="filter-bar">
       <div class="filter-inner">
         <button class="cat-pill active" onclick="setCategory('all', this)">
@@ -1819,7 +1803,7 @@
       </div>
     </div>
 
-    <!-- ====== PRODUCTS ====== -->
+    <!-- PRODUCTS -->
     <section class="products-section" id="productsSection">
       <div class="products-header">
         <h2 class="products-title">Featured Collection</h2>
@@ -1828,7 +1812,7 @@
       <div class="products-grid" id="productsGrid"></div>
     </section>
 
-    <!-- ====== FEATURES ====== -->
+    <!-- FEATURES -->
     <div class="features">
       <div class="features-inner">
         <div class="feature">
@@ -1854,7 +1838,7 @@
       </div>
     </div>
 
-    <!-- ====== FOOTER ====== -->
+    <!-- FOOTER -->
     <footer>
       <div class="footer-inner">
         <div class="footer-grid">
@@ -1904,7 +1888,7 @@
       </div>
     </footer>
 
-    <!-- ====== PRODUCT DETAIL MODAL ====== -->
+    <!-- PRODUCT DETAIL MODAL -->
     <div
       class="modal-overlay"
       id="productModal"
@@ -1954,7 +1938,7 @@
       </div>
     </div>
 
-    <!-- ====== CART SIDEBAR ====== -->
+    <!-- CART SIDEBAR -->
     <div class="cart-backdrop" id="cartBackdrop" onclick="closeCart()"></div>
     <div class="cart-sidebar" id="cartSidebar">
       <div class="cart-head">
@@ -2002,7 +1986,7 @@
       </div>
     </div>
 
-    <!-- ====== AUTH MODAL ====== -->
+    <!-- AUTH MODAL -->
     <div
       class="modal-overlay"
       id="authModal"
@@ -2109,7 +2093,7 @@
       </div>
     </div>
 
-    <!-- ====== CHECKOUT MODAL ====== -->
+    <!-- CHECKOUT MODAL -->
     <div
       class="modal-overlay"
       id="checkoutModal"
@@ -2323,7 +2307,7 @@
       </div>
     </div>
 
-    <!-- ====== ORDERS MODAL ====== -->
+    <!-- ORDERS MODAL -->
     <div
       class="modal-overlay"
       id="ordersModal"
@@ -2354,7 +2338,7 @@
               font-size: 1.1rem;
               padding: 4px;
             "
-            onclick="closeModal('ordersModal')"
+            onclick="closeOrdersModal()"
           >
             <i class="fas fa-times"></i>
           </button>
@@ -2363,10 +2347,10 @@
       </div>
     </div>
 
-    <!-- ====== TOAST ====== -->
+    <!-- TOAST -->
     <div class="toast-wrap" id="toastWrap"></div>
 
-    <!-- ====== FIREBASE ====== -->
+    <!-- FIREBASE -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
       import {
@@ -2375,8 +2359,8 @@
         addDoc,
         query,
         where,
-        getDocs,
         orderBy,
+        onSnapshot,
       } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -2397,20 +2381,27 @@
         return docRef.id;
       };
 
-      // ── Filter orders by userEmail from localStorage ──
-      window.getOrdersFromFirebase = async function (userEmail) {
-        try {
-          const q = query(
-            collection(db, "orders"),
-            where("userEmail", "==", userEmail.toLowerCase()),
-            orderBy("date", "desc"),
-          );
-          const snap = await getDocs(q);
-          return snap.docs.map((d) => ({ ...d.data(), _docId: d.id }));
-        } catch (e) {
-          console.error("Firebase fetch error:", e);
-          return [];
-        }
+      // Real-time listener for a specific user's orders
+      window.subscribeToUserOrders = function (userEmail, onUpdate) {
+        const q = query(
+          collection(db, "orders"),
+          where("userEmail", "==", userEmail.toLowerCase()),
+          orderBy("date", "desc"),
+        );
+        const unsubscribe = onSnapshot(
+          q,
+          (snap) => {
+            const orders = snap.docs.map((d) => ({
+              ...d.data(),
+              _docId: d.id,
+            }));
+            onUpdate(orders);
+          },
+          (err) => {
+            console.error("onSnapshot error:", err);
+          },
+        );
+        return unsubscribe;
       };
 
       window._firebaseReady = true;
@@ -3074,7 +3065,7 @@
         const order = {
           id: orderId,
           userId: user.id,
-          userEmail: user.email.toLowerCase(), // ← KEY field for filtering
+          userEmail: user.email.toLowerCase(),
           customer: {
             name,
             email: document.getElementById("chkEmail").value.trim(),
@@ -3131,43 +3122,37 @@
         }
       }
 
-      // ============ ORDERS — fetch by userEmail from localStorage ============
+      // ============ ORDERS (real-time with onSnapshot) ============
+      let _unsubscribeUserOrders = null;
+
       async function openOrders() {
         const user = getCurrentUser();
         if (!user) {
           openAuth("login");
           return;
         }
+
         openModal("ordersModal");
         const container = document.getElementById("ordersListContainer");
         container.innerHTML = `<div class="loading-orders"><i class="fas fa-spinner"></i><p>Loading your orders…</p></div>`;
-        try {
-          // Use the email stored in localStorage to filter Firestore orders
-          const userEmail = user.email.toLowerCase();
-          let orders = [];
-          if (window.getOrdersFromFirebase) {
-            orders = await window.getOrdersFromFirebase(userEmail);
-          } else {
-            // Wait for Firebase to be ready
-            await new Promise((resolve) => {
-              if (window._firebaseReady) {
-                resolve();
+
+        // Tear down any previous listener
+        if (_unsubscribeUserOrders) {
+          _unsubscribeUserOrders();
+          _unsubscribeUserOrders = null;
+        }
+
+        const subscribe = () => {
+          _unsubscribeUserOrders = window.subscribeToUserOrders(
+            user.email,
+            (orders) => {
+              if (!orders.length) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-box-open"></i><h3>No orders yet</h3><p>Your orders will appear here once you've made a purchase.</p></div>`;
                 return;
               }
-              document.addEventListener("firebaseReady", resolve, {
-                once: true,
-              });
-              setTimeout(resolve, 5000);
-            });
-            if (window.getOrdersFromFirebase)
-              orders = await window.getOrdersFromFirebase(userEmail);
-          }
-          if (!orders.length) {
-            container.innerHTML = `<div class="empty-state"><i class="fas fa-box-open"></i><h3>No orders yet</h3><p>Your orders will appear here once you've made a purchase.</p></div>`;
-          } else {
-            container.innerHTML = orders
-              .map(
-                (o) => `
+              container.innerHTML = orders
+                .map(
+                  (o) => `
               <div class="order-card">
                 <div class="order-card-head">
                   <span class="order-id">Order ${String(o.id).slice(-10)}</span>
@@ -3189,11 +3174,24 @@
                   <span class="order-total">${fmt(o.total)}</span>
                 </div>
               </div>`,
-              )
-              .join("");
-          }
-        } catch (err) {
-          container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>Couldn't load orders</h3><p>Please check your connection and try again.</p></div>`;
+                )
+                .join("");
+            },
+          );
+        };
+
+        if (window._firebaseReady) {
+          subscribe();
+        } else {
+          document.addEventListener("firebaseReady", subscribe, { once: true });
+        }
+      }
+
+      function closeOrdersModal() {
+        closeModal("ordersModal");
+        if (_unsubscribeUserOrders) {
+          _unsubscribeUserOrders();
+          _unsubscribeUserOrders = null;
         }
       }
 
@@ -3246,7 +3244,7 @@
           closeModal("productModal");
           closeModal("authModal");
           closeModal("checkoutModal");
-          closeModal("ordersModal");
+          closeOrdersModal();
           closeCart();
         }
       });
@@ -3279,6 +3277,7 @@
       window.selectPayment = selectPayment;
       window.placeOrder = placeOrder;
       window.openOrders = openOrders;
+      window.closeOrdersModal = closeOrdersModal;
       window.openModal = openModal;
       window.closeModal = closeModal;
       window.handleModalClick = handleModalClick;
