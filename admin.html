@@ -1,3 +1,4 @@
+//new code
 <!doctype html>
 <html lang="en">
   <head>
@@ -10,29 +11,29 @@
     />
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon.png" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
       :root {
-        --ink: #0d0d0d;
-        --sidebar: #111827;
-        --sidebar-hover: #1f2937;
-        --sidebar-active: #1e3a5c;
-        --cream: #f7f4ee;
-        --gold: #c9a84c;
-        --gold-bg: #fdf6e3;
-        --accent: #1a3a5c;
-        --accent2: #b04a2f;
+        --ink: #1e1b4b;
+        --sidebar: #1e293b;
+        --sidebar-hover: #334155;
+        --sidebar-active: rgba(99, 102, 241, 0.25);
+        --cream: #f8faff;
+        --gold: #6366f1;
+        --gold-bg: #eef2ff;
+        --accent: #4f46e5;
+        --accent2: #dc2626;
         --green: #16a34a;
         --green-bg: #dcfce7;
         --blue: #1d4ed8;
         --blue-bg: #dbeafe;
-        --border: #e8e2d8;
-        --muted: #6b7280;
+        --border: #e2e8f0;
+        --muted: #64748b;
         --card: #ffffff;
-        --page-bg: #f4f1ec;
+        --page-bg: #f1f5f9;
         --sidebar-w: 240px;
       }
       *,
@@ -46,7 +47,7 @@
         font-size: 16px;
       }
       body {
-        font-family: "DM Sans", sans-serif;
+        font-family: "Inter", sans-serif;
         background: var(--page-bg);
         color: var(--ink);
         overflow-x: hidden;
@@ -57,7 +58,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: var(--sidebar);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         padding: 1rem;
       }
       .login-card {
@@ -77,17 +78,17 @@
       .login-icon {
         width: 40px;
         height: 40px;
-        background: var(--gold);
+        background: linear-gradient(135deg, #7c3aed, #4f46e5);
         border-radius: 9px;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 1rem;
-        color: var(--ink);
+        color: white;
         flex-shrink: 0;
       }
       .login-brand {
-        font-family: "Cormorant Garamond", serif;
+        font-family: "Inter", sans-serif;
         font-size: 1.3rem;
         font-weight: 700;
       }
@@ -98,7 +99,7 @@
         text-transform: uppercase;
       }
       .login-title {
-        font-family: "Cormorant Garamond", serif;
+        font-family: "Inter", sans-serif;
         font-size: 1.7rem;
         font-weight: 700;
         margin-bottom: 4px;
@@ -125,13 +126,14 @@
         border: 2px solid var(--border);
         border-radius: 9px;
         font-size: 0.875rem;
-        font-family: "DM Sans", sans-serif;
+        font-family: "Inter", sans-serif;
         outline: none;
         transition: 0.2s;
         -webkit-appearance: none;
       }
       .form-input:focus {
-        border-color: var(--ink);
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
       }
       .form-error {
         font-size: 0.73rem;
@@ -141,13 +143,13 @@
       .btn-login {
         width: 100%;
         padding: 13px;
-        background: var(--ink);
+        background: linear-gradient(to right, #7c3aed, #4f46e5);
         color: white;
         border: none;
         border-radius: 9px;
         font-weight: 700;
         font-size: 0.875rem;
-        font-family: "DM Sans", sans-serif;
+        font-family: "Inter", sans-serif;
         cursor: pointer;
         transition: 0.2s;
         margin-top: 7px;
@@ -157,7 +159,8 @@
         gap: 7px;
       }
       .btn-login:hover {
-        background: var(--accent);
+        background: linear-gradient(to right, #6d28d9, #4338ca);
+        transform: scale(1.02);
       }
       .login-hint {
         font-size: 0.73rem;
@@ -167,13 +170,13 @@
         line-height: 1.5;
       }
       .prefill-note {
-        background: var(--gold-bg);
-        border: 1px solid var(--gold-light, #e8d5a3);
+        background: #eef2ff;
+        border: 1px solid #c7d2fe;
         border-radius: 9px;
         padding: 10px 14px;
         margin-bottom: 1.25rem;
         font-size: 0.78rem;
-        color: #7c5e10;
+        color: #3730a3;
         display: flex;
         align-items: center;
         gap: 8px;
@@ -185,7 +188,7 @@
       }
       .sidebar {
         width: var(--sidebar-w);
-        background: var(--sidebar);
+        background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
         color: white;
         flex-shrink: 0;
         display: flex;
@@ -223,23 +226,23 @@
       .sidebar-icon {
         width: 32px;
         height: 32px;
-        background: var(--gold);
+        background: linear-gradient(135deg, #7c3aed, #4f46e5);
         border-radius: 7px;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 0.85rem;
-        color: var(--ink);
+        color: white;
         flex-shrink: 0;
       }
       .sidebar-brand {
-        font-family: "Cormorant Garamond", serif;
+        font-family: "Inter", sans-serif;
         font-size: 1rem;
         font-weight: 700;
       }
       .sidebar-tag {
         font-size: 0.58rem;
-        color: var(--gold);
+        color: #a5b4fc;
         letter-spacing: 0.12em;
         text-transform: uppercase;
         margin-top: 1px;
@@ -284,15 +287,15 @@
         width: 100%;
         background: none;
         border: none;
-        font-family: "DM Sans", sans-serif;
+        font-family: "Inter", sans-serif;
         text-align: left;
       }
       .nav-item:hover {
-        background: var(--sidebar-hover);
+        background: rgba(255, 255, 255, 0.1);
         color: white;
       }
       .nav-item.active {
-        background: var(--sidebar-active);
+        background: rgba(99, 102, 241, 0.25);
         color: white;
       }
       .nav-item i {
@@ -323,8 +326,8 @@
         width: 30px;
         height: 30px;
         border-radius: 50%;
-        background: var(--gold);
-        color: var(--ink);
+        background: linear-gradient(135deg, #7c3aed, #4f46e5);
+        color: white;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -383,12 +386,13 @@
         background: var(--cream);
       }
       .topbar-title {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 1.3rem;
+        font-family: "Inter", sans-serif;
+        font-size: 1.1rem;
         font-weight: 700;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        color: #1e1b4b;
       }
       .topbar-right {
         display: flex;
@@ -428,10 +432,11 @@
         display: block;
       }
       .page-title {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 1.75rem;
+        font-family: "Inter", sans-serif;
+        font-size: 1.6rem;
         font-weight: 700;
         margin-bottom: 3px;
+        color: #1e1b4b;
       }
       .page-sub {
         font-size: 0.85rem;
@@ -481,8 +486,8 @@
         flex-shrink: 0;
       }
       .stat-value {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 1.75rem;
+        font-family: "Inter", sans-serif;
+        font-size: 1.5rem;
         font-weight: 700;
         line-height: 1;
       }
@@ -725,17 +730,18 @@
         border-radius: 7px;
         font-size: 0.78rem;
         font-weight: 600;
-        font-family: "DM Sans", sans-serif;
+        font-family: "Inter", sans-serif;
         cursor: pointer;
         border: none;
         transition: 0.15s;
       }
       .btn-primary {
-        background: var(--ink);
+        background: linear-gradient(to right, #7c3aed, #4f46e5);
         color: white;
       }
       .btn-primary:hover {
-        background: var(--accent);
+        background: linear-gradient(to right, #6d28d9, #4338ca);
+        transform: scale(1.02);
       }
       .btn-ghost {
         background: none;
@@ -824,8 +830,8 @@
         z-index: 2;
       }
       .modal-hdr h3 {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 1.3rem;
+        font-family: "Inter", sans-serif;
+        font-size: 1.1rem;
         font-weight: 700;
       }
       .modal-close {
@@ -1056,7 +1062,7 @@
         max-width: calc(100vw - 2rem);
       }
       .toast {
-        background: var(--ink);
+        background: #1e293b;
         color: white;
         padding: 13px 18px;
         border-radius: 11px;
@@ -1067,10 +1073,10 @@
         min-width: 240px;
         font-size: 0.85rem;
         animation: toastIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border-left: 4px solid var(--gold);
+        border-left: 4px solid #6366f1;
       }
       .toast.error {
-        border-color: var(--accent2);
+        border-color: #dc2626;
       }
       .toast.success {
         border-color: #22c55e;
@@ -1122,17 +1128,40 @@
         }
       }
 
-      @media (max-width: 1200px) {
-        .stats-grid {
-          grid-template-columns: repeat(2, 1fr);
+      @media print {
+        body * {
+          visibility: hidden;
         }
-        .charts-grid {
-          grid-template-columns: 1fr;
+        #reportPreviewCard,
+        #reportPreviewCard * {
+          visibility: visible;
         }
-        .analytics-row {
-          grid-template-columns: 1fr;
+        #reportPreviewCard {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          z-index: 9999;
+          background: white;
+          padding: 2rem;
+        }
+        .table-head button {
+          display: none;
+        }
+        @page {
+          margin: 1.5cm;
         }
       }
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+      .analytics-row {
+        grid-template-columns: 1fr;
+      }
+
       @media (max-width: 900px) {
         :root {
           --sidebar-w: 0px;
@@ -1338,6 +1367,13 @@
               data-page="customers"
             >
               <i class="fas fa-users"></i><span>Customers</span>
+            </button>
+            <button
+              class="nav-item"
+              onclick="goTo('reports')"
+              data-page="reports"
+            >
+              <i class="fas fa-file-alt"></i><span>Reports</span>
             </button>
             <div class="nav-section">System</div>
             <button
@@ -1870,6 +1906,190 @@
               </div>
             </div>
 
+            <!-- REPORTS -->
+            <div class="section" id="page-reports">
+              <h1 class="page-title">Reports</h1>
+              <p class="page-sub">Export your store data as PDF or CSV</p>
+
+              <div class="stats-grid" style="margin-bottom: 1.5rem">
+                <div class="stat-card" style="border-left: 4px solid #4f46e5">
+                  <div class="stat-top">
+                    <div><div class="stat-label">Sales Report</div></div>
+                    <div
+                      class="stat-icon"
+                      style="background: #eef2ff; color: #4f46e5"
+                    >
+                      <i class="fas fa-chart-bar"></i>
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      font-size: 0.83rem;
+                      color: var(--muted);
+                      margin-bottom: 0.75rem;
+                    "
+                  >
+                    Orders, revenue, and payment breakdown
+                  </div>
+                  <div style="display: flex; gap: 8px; flex-wrap: wrap">
+                    <button
+                      class="btn btn-primary btn-sm"
+                      onclick="exportReport('sales', 'pdf')"
+                    >
+                      <i class="fas fa-file-pdf"></i> PDF
+                    </button>
+                    <button
+                      class="btn btn-ghost btn-sm"
+                      onclick="exportReport('sales', 'csv')"
+                    >
+                      <i class="fas fa-file-csv"></i> CSV
+                    </button>
+                  </div>
+                </div>
+                <div class="stat-card" style="border-left: 4px solid #16a34a">
+                  <div class="stat-top">
+                    <div><div class="stat-label">Inventory Report</div></div>
+                    <div
+                      class="stat-icon"
+                      style="background: var(--green-bg); color: var(--green)"
+                    >
+                      <i class="fas fa-warehouse"></i>
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      font-size: 0.83rem;
+                      color: var(--muted);
+                      margin-bottom: 0.75rem;
+                    "
+                  >
+                    Stock levels, low stock, and out-of-stock
+                  </div>
+                  <div style="display: flex; gap: 8px; flex-wrap: wrap">
+                    <button
+                      class="btn btn-primary btn-sm"
+                      onclick="exportReport('inventory', 'pdf')"
+                    >
+                      <i class="fas fa-file-pdf"></i> PDF
+                    </button>
+                    <button
+                      class="btn btn-ghost btn-sm"
+                      onclick="exportReport('inventory', 'csv')"
+                    >
+                      <i class="fas fa-file-csv"></i> CSV
+                    </button>
+                  </div>
+                </div>
+                <div class="stat-card" style="border-left: 4px solid #0891b2">
+                  <div class="stat-top">
+                    <div><div class="stat-label">Customer Report</div></div>
+                    <div
+                      class="stat-icon"
+                      style="background: #e0f2fe; color: #0891b2"
+                    >
+                      <i class="fas fa-users"></i>
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      font-size: 0.83rem;
+                      color: var(--muted);
+                      margin-bottom: 0.75rem;
+                    "
+                  >
+                    Registered customers and spending history
+                  </div>
+                  <div style="display: flex; gap: 8px; flex-wrap: wrap">
+                    <button
+                      class="btn btn-primary btn-sm"
+                      onclick="exportReport('customers', 'pdf')"
+                    >
+                      <i class="fas fa-file-pdf"></i> PDF
+                    </button>
+                    <button
+                      class="btn btn-ghost btn-sm"
+                      onclick="exportReport('customers', 'csv')"
+                    >
+                      <i class="fas fa-file-csv"></i> CSV
+                    </button>
+                  </div>
+                </div>
+                <div class="stat-card" style="border-left: 4px solid #7c3aed">
+                  <div class="stat-top">
+                    <div><div class="stat-label">Analytics Report</div></div>
+                    <div
+                      class="stat-icon"
+                      style="background: #ede9fe; color: #7c3aed"
+                    >
+                      <i class="fas fa-chart-line"></i>
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      font-size: 0.83rem;
+                      color: var(--muted);
+                      margin-bottom: 0.75rem;
+                    "
+                  >
+                    Revenue trends, top products, category breakdown
+                  </div>
+                  <div style="display: flex; gap: 8px; flex-wrap: wrap">
+                    <button
+                      class="btn btn-primary btn-sm"
+                      onclick="exportReport('analytics', 'pdf')"
+                    >
+                      <i class="fas fa-file-pdf"></i> PDF
+                    </button>
+                    <button
+                      class="btn btn-ghost btn-sm"
+                      onclick="exportReport('analytics', 'csv')"
+                    >
+                      <i class="fas fa-file-csv"></i> CSV
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Report Preview Area -->
+              <div
+                class="table-card"
+                id="reportPreviewCard"
+                style="display: none"
+              >
+                <div
+                  class="table-head"
+                  style="justify-content: space-between; align-items: center"
+                >
+                  <span class="table-title" id="reportPreviewTitle"
+                    >Report Preview</span
+                  >
+                  <div style="display: flex; gap: 8px">
+                    <button
+                      class="btn btn-primary btn-sm"
+                      id="reportDownloadBtn"
+                      onclick="downloadReportFromPreview()"
+                    >
+                      <i class="fas fa-download"></i> Download
+                    </button>
+                    <button
+                      class="btn btn-ghost btn-sm"
+                      onclick="
+                        document.getElementById(
+                          'reportPreviewCard',
+                        ).style.display = 'none'
+                      "
+                    >
+                      <i class="fas fa-times"></i> Close
+                    </button>
+                  </div>
+                </div>
+                <div
+                  style="padding: 1.25rem; overflow-x: auto"
+                  id="reportPreviewBody"
+                ></div>
+              </div>
+            </div>
+
             <!-- SETTINGS -->
             <div class="section" id="page-settings">
               <h1 class="page-title">Settings</h1>
@@ -2365,6 +2585,7 @@
             inventory: "Inventory",
             analytics: "Analytics",
             customers: "Customers",
+            reports: "Reports",
             settings: "Settings",
           }[page] || page;
         if (window.innerWidth <= 900) closeSidebar();
@@ -2375,6 +2596,8 @@
         if (page === "analytics") renderAnalytics();
         if (page === "customers") renderCustomers();
         if (page === "settings") loadSettings();
+        if (page === "reports")
+          document.getElementById("reportPreviewCard").style.display = "none";
       }
 
       // ============ BADGES ============
@@ -2410,10 +2633,10 @@
           (o) => o.status === "pending",
         ).length;
         document.getElementById("statsGrid").innerHTML = `
-          <div class="stat-card"><div class="stat-top"><div><div class="stat-label">Today's Revenue</div></div><div class="stat-icon" style="background:#d4f5e2;color:#16a34a;"><i class="fas fa-naira-sign"></i></div></div><div class="stat-value">${fmt(todayRevenue)}</div><div class="stat-change neutral"><i class="fas fa-calendar-day"></i>${todayOrders.length} orders today</div></div>
-          <div class="stat-card"><div class="stat-top"><div><div class="stat-label">Monthly Revenue</div></div><div class="stat-icon" style="background:var(--blue-bg);color:var(--blue);"><i class="fas fa-chart-line"></i></div></div><div class="stat-value">${fmt(monthRevenue)}</div><div class="stat-change neutral"><i class="fas fa-calendar-alt"></i>${monthOrders.length} orders</div></div>
-          <div class="stat-card"><div class="stat-top"><div><div class="stat-label">Total Revenue</div></div><div class="stat-icon" style="background:var(--gold-bg);color:var(--gold);"><i class="fas fa-coins"></i></div></div><div class="stat-value">${fmt(totalRevenue)}</div><div class="stat-change neutral"><i class="fas fa-shopping-bag"></i>${orders.length} total</div></div>
-          <div class="stat-card"><div class="stat-top"><div><div class="stat-label">Pending Orders</div></div><div class="stat-icon" style="background:#fee2e2;color:#dc2626;"><i class="fas fa-clock"></i></div></div><div class="stat-value">${pendingCount}</div><div class="stat-change ${pendingCount > 0 ? "down" : "up"}"><i class="fas fa-${pendingCount > 0 ? "exclamation-triangle" : "check"}"></i>${pendingCount > 0 ? "Needs attention" : "All clear"}</div></div>
+          <div class="stat-card" style="border-left:4px solid #16a34a;"><div class="stat-top"><div><div class="stat-label">Today's Revenue</div></div><div class="stat-icon" style="background:#d4f5e2;color:#16a34a;"><i class="fas fa-naira-sign"></i></div></div><div class="stat-value">${fmt(todayRevenue)}</div><div class="stat-change neutral"><i class="fas fa-calendar-day"></i>${todayOrders.length} orders today</div></div>
+          <div class="stat-card" style="border-left:4px solid #4f46e5;"><div class="stat-top"><div><div class="stat-label">Monthly Revenue</div></div><div class="stat-icon" style="background:var(--blue-bg);color:var(--blue);"><i class="fas fa-chart-line"></i></div></div><div class="stat-value">${fmt(monthRevenue)}</div><div class="stat-change neutral"><i class="fas fa-calendar-alt"></i>${monthOrders.length} orders</div></div>
+          <div class="stat-card" style="border-left:4px solid #7c3aed;"><div class="stat-top"><div><div class="stat-label">Total Revenue</div></div><div class="stat-icon" style="background:#eef2ff;color:#4f46e5;"><i class="fas fa-coins"></i></div></div><div class="stat-value">${fmt(totalRevenue)}</div><div class="stat-change neutral"><i class="fas fa-shopping-bag"></i>${orders.length} total</div></div>
+          <div class="stat-card" style="border-left:4px solid #dc2626;"><div class="stat-top"><div><div class="stat-label">Pending Orders</div></div><div class="stat-icon" style="background:#fee2e2;color:#dc2626;"><i class="fas fa-clock"></i></div></div><div class="stat-value">${pendingCount}</div><div class="stat-change ${pendingCount > 0 ? "down" : "up"}"><i class="fas fa-${pendingCount > 0 ? "exclamation-triangle" : "check"}"></i>${pendingCount > 0 ? "Needs attention" : "All clear"}</div></div>
         `;
       }
 
@@ -2468,8 +2691,8 @@
               {
                 label: "Revenue",
                 data,
-                backgroundColor: "rgba(201,168,76,0.7)",
-                borderColor: "#c9a84c",
+                backgroundColor: "rgba(99,102,241,0.7)",
+                borderColor: "#6366f1",
                 borderWidth: 2,
                 borderRadius: 5,
               },
@@ -3188,6 +3411,342 @@
           return;
         DB.set("ps_products", []);
         toast("Products reset to defaults");
+      }
+
+      // ============ REPORTS & EXPORTS ============
+      let _currentReportType = null;
+      let _currentReportFormat = null;
+
+      async function exportReport(type, format) {
+        _currentReportType = type;
+        _currentReportFormat = format;
+        const orders = getCachedOrders();
+        const products = getProducts();
+        let users = [];
+        try {
+          users = await window.fetchFirestoreUsers();
+        } catch (e) {}
+
+        const card = document.getElementById("reportPreviewCard");
+        const previewBody = document.getElementById("reportPreviewBody");
+        const previewTitle = document.getElementById("reportPreviewTitle");
+        const downloadBtn = document.getElementById("reportDownloadBtn");
+        downloadBtn.innerHTML = `<i class="fas fa-download"></i> Download ${format.toUpperCase()}`;
+
+        card.style.display = "";
+        card.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        if (type === "sales") {
+          previewTitle.textContent = "Sales Report";
+          const totalRevenue = orders.reduce((s, o) => s + o.total, 0);
+          const completedOrders = orders.filter(
+            (o) => o.status === "completed",
+          );
+          const pendingOrders = orders.filter((o) => o.status === "pending");
+          const payBreakdown = orders.reduce((acc, o) => {
+            acc[o.payment] = (acc[o.payment] || 0) + o.total;
+            return acc;
+          }, {});
+          previewBody.innerHTML = `
+            <div style="margin-bottom:1rem;display:flex;gap:1.5rem;flex-wrap:wrap;">
+              <div style="background:#eef2ff;border-radius:10px;padding:1rem 1.5rem;min-width:140px;"><div style="font-size:0.72rem;color:#4f46e5;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Total Revenue</div><div style="font-size:1.4rem;font-weight:700;color:#1e1b4b;">${fmt(totalRevenue)}</div></div>
+              <div style="background:#dcfce7;border-radius:10px;padding:1rem 1.5rem;min-width:140px;"><div style="font-size:0.72rem;color:#16a34a;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Completed</div><div style="font-size:1.4rem;font-weight:700;color:#14532d;">${completedOrders.length}</div></div>
+              <div style="background:#fff7e6;border-radius:10px;padding:1rem 1.5rem;min-width:140px;"><div style="font-size:0.72rem;color:#d97706;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Pending</div><div style="font-size:1.4rem;font-weight:700;color:#92400e;">${pendingOrders.length}</div></div>
+              <div style="background:#f3f4f6;border-radius:10px;padding:1rem 1.5rem;min-width:140px;"><div style="font-size:0.72rem;color:#6b7280;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Total Orders</div><div style="font-size:1.4rem;font-weight:700;color:#1e1b4b;">${orders.length}</div></div>
+            </div>
+            <table style="width:100%;border-collapse:collapse;font-size:0.83rem;">
+              <thead><tr style="background:#eef2ff;">${["Order ID", "Customer", "Date", "Items", "Subtotal", "VAT", "Total", "Payment", "Status"].map((h) => `<th style="padding:9px 12px;text-align:left;font-size:0.67rem;text-transform:uppercase;letter-spacing:.08em;color:#4f46e5;font-weight:700;">${h}</th>`).join("")}</tr></thead>
+              <tbody>${orders
+                .slice(0, 100)
+                .map(
+                  (
+                    o,
+                    i,
+                  ) => `<tr style="background:${i % 2 === 0 ? "#fff" : "#f8faff"};">
+                <td style="padding:8px 12px;font-weight:700;">#${String(o.id).slice(-8)}</td>
+                <td style="padding:8px 12px;">${o.customer.name}</td>
+                <td style="padding:8px 12px;">${fmtDate(o.date)}</td>
+                <td style="padding:8px 12px;">${o.items.length}</td>
+                <td style="padding:8px 12px;">${fmt(o.subtotal)}</td>
+                <td style="padding:8px 12px;">${fmt(o.vat)}</td>
+                <td style="padding:8px 12px;font-weight:700;">${fmt(o.total)}</td>
+                <td style="padding:8px 12px;text-transform:capitalize;">${o.payment}</td>
+                <td style="padding:8px 12px;"><span style="display:inline-block;padding:2px 9px;border-radius:100px;font-size:0.67rem;font-weight:700;text-transform:uppercase;background:${o.status === "completed" ? "#dcfce7" : o.status === "pending" ? "#fff7e6" : "#e0f2fe"};color:${o.status === "completed" ? "#16a34a" : o.status === "pending" ? "#d97706" : "#0891b2"}">${o.status}</span></td>
+              </tr>`,
+                )
+                .join("")}</tbody>
+            </table>`;
+        } else if (type === "inventory") {
+          previewTitle.textContent = "Inventory Report";
+          const outOfStock = products.filter((p) => p.quantity === 0);
+          const lowStock = products.filter(
+            (p) => p.quantity > 0 && p.quantity <= 5,
+          );
+          const healthy = products.filter((p) => p.quantity > 5);
+          previewBody.innerHTML = `
+            <div style="margin-bottom:1rem;display:flex;gap:1.5rem;flex-wrap:wrap;">
+              <div style="background:#fee2e2;border-radius:10px;padding:1rem 1.5rem;min-width:140px;"><div style="font-size:0.72rem;color:#dc2626;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Out of Stock</div><div style="font-size:1.4rem;font-weight:700;color:#7f1d1d;">${outOfStock.length}</div></div>
+              <div style="background:#fff7e6;border-radius:10px;padding:1rem 1.5rem;min-width:140px;"><div style="font-size:0.72rem;color:#d97706;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Low Stock</div><div style="font-size:1.4rem;font-weight:700;color:#78350f;">${lowStock.length}</div></div>
+              <div style="background:#dcfce7;border-radius:10px;padding:1rem 1.5rem;min-width:140px;"><div style="font-size:0.72rem;color:#16a34a;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Healthy Stock</div><div style="font-size:1.4rem;font-weight:700;color:#14532d;">${healthy.length}</div></div>
+              <div style="background:#eef2ff;border-radius:10px;padding:1rem 1.5rem;min-width:140px;"><div style="font-size:0.72rem;color:#4f46e5;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Total Products</div><div style="font-size:1.4rem;font-weight:700;color:#1e1b4b;">${products.length}</div></div>
+            </div>
+            <table style="width:100%;border-collapse:collapse;font-size:0.83rem;">
+              <thead><tr style="background:#eef2ff;">${["Product", "Brand", "Category", "Price", "Stock", "Units Sold", "Status"].map((h) => `<th style="padding:9px 12px;text-align:left;font-size:0.67rem;text-transform:uppercase;letter-spacing:.08em;color:#4f46e5;font-weight:700;">${h}</th>`).join("")}</tr></thead>
+              <tbody>${products
+                .map(
+                  (
+                    p,
+                    i,
+                  ) => `<tr style="background:${i % 2 === 0 ? "#fff" : "#f8faff"};">
+                <td style="padding:8px 12px;font-weight:700;">${p.name}</td>
+                <td style="padding:8px 12px;">${p.brand}</td>
+                <td style="padding:8px 12px;text-transform:capitalize;">${p.category}</td>
+                <td style="padding:8px 12px;font-weight:700;">${fmt(p.price)}</td>
+                <td style="padding:8px 12px;font-weight:700;color:${p.quantity === 0 ? "#dc2626" : p.quantity <= 5 ? "#d97706" : "#16a34a"}">${p.quantity}</td>
+                <td style="padding:8px 12px;">${p.sold || 0}</td>
+                <td style="padding:8px 12px;"><span style="display:inline-block;padding:2px 9px;border-radius:100px;font-size:0.67rem;font-weight:700;text-transform:uppercase;background:${p.quantity === 0 ? "#fee2e2" : p.quantity <= 5 ? "#fff7e6" : "#dcfce7"};color:${p.quantity === 0 ? "#dc2626" : p.quantity <= 5 ? "#d97706" : "#16a34a"}">${p.quantity === 0 ? "Out of Stock" : p.quantity <= 5 ? "Low Stock" : "Active"}</span></td>
+              </tr>`,
+                )
+                .join("")}</tbody>
+            </table>`;
+        } else if (type === "customers") {
+          previewTitle.textContent = "Customer Report";
+          previewBody.innerHTML = `
+            <div style="margin-bottom:1rem;display:flex;gap:1.5rem;flex-wrap:wrap;">
+              <div style="background:#eef2ff;border-radius:10px;padding:1rem 1.5rem;min-width:140px;"><div style="font-size:0.72rem;color:#4f46e5;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Total Customers</div><div style="font-size:1.4rem;font-weight:700;color:#1e1b4b;">${users.length}</div></div>
+            </div>
+            <table style="width:100%;border-collapse:collapse;font-size:0.83rem;">
+              <thead><tr style="background:#eef2ff;">${["Name", "Email", "Phone", "Orders", "Total Spent", "Joined"].map((h) => `<th style="padding:9px 12px;text-align:left;font-size:0.67rem;text-transform:uppercase;letter-spacing:.08em;color:#4f46e5;font-weight:700;">${h}</th>`).join("")}</tr></thead>
+              <tbody>${users
+                .map((u, i) => {
+                  const uOrders = orders.filter(
+                    (o) => o.userEmail === (u.email || "").toLowerCase(),
+                  );
+                  const spent = uOrders.reduce((s, o) => s + o.total, 0);
+                  return `<tr style="background:${i % 2 === 0 ? "#fff" : "#f8faff"};">
+                  <td style="padding:8px 12px;font-weight:700;">${u.name || "—"}</td>
+                  <td style="padding:8px 12px;">${u.email || "—"}</td>
+                  <td style="padding:8px 12px;">${u.phone || "—"}</td>
+                  <td style="padding:8px 12px;">${uOrders.length}</td>
+                  <td style="padding:8px 12px;font-weight:700;">${fmt(spent)}</td>
+                  <td style="padding:8px 12px;">${u.createdAt ? fmtDate(u.createdAt) : "—"}</td>
+                </tr>`;
+                })
+                .join("")}</tbody>
+            </table>`;
+        } else if (type === "analytics") {
+          previewTitle.textContent = "Analytics Report";
+          const totalRev = orders.reduce((s, o) => s + o.total, 0);
+          const catRev = orders.reduce((acc, o) => {
+            o.items.forEach((item) => {
+              acc[item.category] =
+                (acc[item.category] || 0) + item.price * item.quantity;
+            });
+            return acc;
+          }, {});
+          const topProducts = products
+            .slice()
+            .sort((a, b) => (b.sold || 0) - (a.sold || 0))
+            .slice(0, 10);
+          previewBody.innerHTML = `
+            <div style="margin-bottom:1rem;display:flex;gap:1.5rem;flex-wrap:wrap;">
+              <div style="background:#eef2ff;border-radius:10px;padding:1rem 1.5rem;min-width:140px;"><div style="font-size:0.72rem;color:#4f46e5;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Total Revenue</div><div style="font-size:1.4rem;font-weight:700;color:#1e1b4b;">${fmt(totalRev)}</div></div>
+              <div style="background:#dcfce7;border-radius:10px;padding:1rem 1.5rem;min-width:140px;"><div style="font-size:0.72rem;color:#16a34a;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Total Orders</div><div style="font-size:1.4rem;font-weight:700;color:#14532d;">${orders.length}</div></div>
+              <div style="background:#ede9fe;border-radius:10px;padding:1rem 1.5rem;min-width:140px;"><div style="font-size:0.72rem;color:#7c3aed;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Avg Order Value</div><div style="font-size:1.4rem;font-weight:700;color:#4c1d95;">${orders.length ? fmt(Math.round(totalRev / orders.length)) : fmt(0)}</div></div>
+            </div>
+            <h3 style="font-size:0.85rem;font-weight:700;margin-bottom:0.75rem;color:#1e1b4b;">Revenue by Category</h3>
+            <table style="width:100%;border-collapse:collapse;font-size:0.83rem;margin-bottom:1.5rem;">
+              <thead><tr style="background:#eef2ff;">${["Category", "Revenue"].map((h) => `<th style="padding:9px 12px;text-align:left;font-size:0.67rem;text-transform:uppercase;letter-spacing:.08em;color:#4f46e5;font-weight:700;">${h}</th>`).join("")}</tr></thead>
+              <tbody>${Object.entries(catRev)
+                .sort((a, b) => b[1] - a[1])
+                .map(
+                  (
+                    [cat, rev],
+                    i,
+                  ) => `<tr style="background:${i % 2 === 0 ? "#fff" : "#f8faff"};">
+                <td style="padding:8px 12px;text-transform:capitalize;font-weight:600;">${cat}</td>
+                <td style="padding:8px 12px;font-weight:700;">${fmt(rev)}</td>
+              </tr>`,
+                )
+                .join("")}</tbody>
+            </table>
+            <h3 style="font-size:0.85rem;font-weight:700;margin-bottom:0.75rem;color:#1e1b4b;">Top Selling Products</h3>
+            <table style="width:100%;border-collapse:collapse;font-size:0.83rem;">
+              <thead><tr style="background:#eef2ff;">${["Product", "Brand", "Category", "Units Sold", "Revenue"].map((h) => `<th style="padding:9px 12px;text-align:left;font-size:0.67rem;text-transform:uppercase;letter-spacing:.08em;color:#4f46e5;font-weight:700;">${h}</th>`).join("")}</tr></thead>
+              <tbody>${topProducts
+                .map(
+                  (
+                    p,
+                    i,
+                  ) => `<tr style="background:${i % 2 === 0 ? "#fff" : "#f8faff"};">
+                <td style="padding:8px 12px;font-weight:700;">${p.name}</td>
+                <td style="padding:8px 12px;">${p.brand}</td>
+                <td style="padding:8px 12px;text-transform:capitalize;">${p.category}</td>
+                <td style="padding:8px 12px;">${p.sold || 0}</td>
+                <td style="padding:8px 12px;font-weight:700;">${fmt((p.sold || 0) * p.price)}</td>
+              </tr>`,
+                )
+                .join("")}</tbody>
+            </table>`;
+        }
+
+        if (format === "csv") {
+          setTimeout(() => downloadCSV(type, orders, products, users), 300);
+        }
+      }
+
+      function downloadReportFromPreview() {
+        if (_currentReportFormat === "pdf") {
+          window.print();
+        } else {
+          // Re-trigger CSV download
+          const orders = getCachedOrders();
+          const products = getProducts();
+          window
+            .fetchFirestoreUsers()
+            .then((users) =>
+              downloadCSV(_currentReportType, orders, products, users),
+            )
+            .catch(() => downloadCSV(_currentReportType, orders, products, []));
+        }
+      }
+
+      function downloadCSV(type, orders, products, users) {
+        let rows = [];
+        let filename = "";
+        if (type === "sales") {
+          filename = "sales_report.csv";
+          rows = [
+            [
+              "Order ID",
+              "Customer Name",
+              "Email",
+              "Phone",
+              "City",
+              "State",
+              "Items",
+              "Subtotal",
+              "VAT",
+              "Total",
+              "Payment",
+              "Date",
+              "Status",
+            ],
+          ];
+          orders.forEach((o) =>
+            rows.push([
+              "#" + String(o.id).slice(-8),
+              o.customer.name,
+              o.customer.email,
+              o.customer.phone,
+              o.customer.city || "",
+              o.customer.state || "",
+              o.items.length,
+              o.subtotal,
+              o.vat,
+              o.total,
+              o.payment,
+              fmtDate(o.date),
+              o.status,
+            ]),
+          );
+        } else if (type === "inventory") {
+          filename = "inventory_report.csv";
+          rows = [
+            [
+              "Product",
+              "Brand",
+              "Category",
+              "Price (₦)",
+              "Stock",
+              "Units Sold",
+              "Status",
+            ],
+          ];
+          products.forEach((p) =>
+            rows.push([
+              p.name,
+              p.brand,
+              p.category,
+              p.price,
+              p.quantity,
+              p.sold || 0,
+              p.quantity === 0
+                ? "Out of Stock"
+                : p.quantity <= 5
+                  ? "Low Stock"
+                  : "Active",
+            ]),
+          );
+        } else if (type === "customers") {
+          filename = "customers_report.csv";
+          rows = [
+            ["Name", "Email", "Phone", "Orders", "Total Spent (₦)", "Joined"],
+          ];
+          users.forEach((u) => {
+            const uOrders = orders.filter(
+              (o) => o.userEmail === (u.email || "").toLowerCase(),
+            );
+            const spent = uOrders.reduce((s, o) => s + o.total, 0);
+            rows.push([
+              u.name || "",
+              u.email || "",
+              u.phone || "",
+              uOrders.length,
+              spent,
+              u.createdAt ? fmtDate(u.createdAt) : "—",
+            ]);
+          });
+        } else if (type === "analytics") {
+          filename = "analytics_report.csv";
+          const catRev = orders.reduce((acc, o) => {
+            o.items.forEach((item) => {
+              acc[item.category] =
+                (acc[item.category] || 0) + item.price * item.quantity;
+            });
+            return acc;
+          }, {});
+          rows = [["CATEGORY REVENUE"]];
+          rows.push(["Category", "Revenue (₦)"]);
+          Object.entries(catRev)
+            .sort((a, b) => b[1] - a[1])
+            .forEach(([cat, rev]) => rows.push([cat, rev]));
+          rows.push([""]);
+          rows.push(["TOP PRODUCTS"]);
+          rows.push([
+            "Product",
+            "Brand",
+            "Category",
+            "Units Sold",
+            "Est. Revenue (₦)",
+          ]);
+          products
+            .slice()
+            .sort((a, b) => (b.sold || 0) - (a.sold || 0))
+            .slice(0, 20)
+            .forEach((p) =>
+              rows.push([
+                p.name,
+                p.brand,
+                p.category,
+                p.sold || 0,
+                (p.sold || 0) * p.price,
+              ]),
+            );
+        }
+        const csv = rows
+          .map((r) =>
+            r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(","),
+          )
+          .join("\n");
+        const blob = new Blob(["\uFEFF" + csv], {
+          type: "text/csv;charset=utf-8;",
+        });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = filename;
+        a.click();
+        toast("CSV downloaded: " + filename, "success");
       }
 
       // ============ TOAST ============
